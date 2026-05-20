@@ -48,7 +48,7 @@
     }
     .nav-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
     .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; color: var(--navy); letter-spacing: .02em; white-space: nowrap; }
-    .brand-mark { width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, var(--green), var(--cyan)); display: grid; place-items: center; color: #fff; font-weight: 900; }
+    .brand-mark { display: none; }
     .nav-links { display: flex; align-items: center; gap: 14px; color: #314257; font-weight: 700; font-size: .88rem; }
     .nav-links a:hover { color: var(--blue); }
     .admin-link {
@@ -276,7 +276,7 @@
 <body>
   <nav class="nav">
     <div class="container nav-inner">
-      <a href="#top" class="brand" onclick="showMainPage()"><span class="brand-mark">S</span><span>SKYSEF 2026</span></a>
+      <a href="#top" class="brand" onclick="showMainPage()"><span>SKYSEF 2026</span></a>
       <div class="nav-links">
         <a href="#concept">Concept</a>
         <a href="#program">Program</a>
@@ -535,7 +535,7 @@
           <button class="primary-button" onclick="unlockAdmin()">Open Admin</button>
         </div>
         <div id="admin-error" class="error-message"></div>
-        <p class="small-note">Current shared password is set in the script as <code>ACCESS_PASSWORD</code>. Static HTML password control is not server-side security.</p>
+        <p class="small-note">Viewing password is <code>VIEW_PASSWORD</code>. Admin password is <code>ADMIN_PASSWORD</code>. Static HTML password control is not server-side security.</p>
 
         <div id="admin-panel" class="admin-panel">
           <div class="admin-grid">
@@ -628,9 +628,9 @@
   </section>
 
   <script>
-    const ACCESS_PASSWORD_ADMIN = "set";
-    const ACCESS_PASSWORD = "skysef";
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx6XOK1Uuljwx0MeN7ZtxMiiy5tAQa7BiILKfBZU4VcHJoiMDJqR62uvB6YvMkSRSc/exec"; // デプロイ後のGAS Web App URLを入れてください。
+    const VIEW_PASSWORD = "skysef";      // Abstract / Video viewing password
+    const ADMIN_PASSWORD = "set";       // Admin page password and GAS write password
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyWxFL6oGTw7Bs88RDgkNm6FUQCu1uOKLn9TiVZpIZukHoC5Lal4KrUOPq1aRP1Hbuy/exec"; // デプロイ後のGAS Web App URLを入れてください。
 
     const FLAGS = {
       ID: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1280px-Flag_of_Indonesia.svg.png",
@@ -711,6 +711,7 @@
         const url = new URL(GAS_WEB_APP_URL);
         Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
         url.searchParams.set("callback", callbackName);
+        url.searchParams.set("_", Date.now().toString());
         window[callbackName] = (data) => {
           cleanup(); resolve(data);
         };
@@ -729,7 +730,7 @@
         alert("GAS_WEB_APP_URL が未設定です。Apps Scriptをデプロイし、URLをindex.htmlに貼り付けてください。");
         return false;
       }
-      payload.adminPassword = ACCESS_PASSWORD_ADMIN;
+      payload.adminPassword = ADMIN_PASSWORD;
       try {
         await fetch(GAS_WEB_APP_URL, {
           method: "POST",
@@ -860,17 +861,17 @@
     function showMainPage() { document.body.classList.remove("admin-mode"); history.replaceState(null, "", "#top"); setTimeout(() => document.getElementById("top").scrollIntoView({ behavior: "smooth" }), 0); }
     window.addEventListener("load", () => { if (location.hash === "#admin") document.body.classList.add("admin-mode"); loadData(); });
     function showTimelineDay(event, panelId) { document.querySelectorAll(".timeline-tab").forEach(tab => tab.classList.remove("active")); document.querySelectorAll(".timeline-panel").forEach(panel => panel.classList.remove("active")); event.currentTarget.classList.add("active"); document.getElementById(panelId).classList.add("active"); }
-    function unlockMembers() { const input = document.getElementById("member-password"); const error = document.getElementById("member-error"); if (input.value === ACCESS_PASSWORD) { document.getElementById("member-lock").style.display = "none"; document.getElementById("members-content").classList.add("unlocked"); error.textContent = ""; } else error.textContent = "Invalid password. Please try again."; }
+    function unlockMembers() { const input = document.getElementById("member-password"); const error = document.getElementById("member-error"); if (input.value === VIEW_PASSWORD) { document.getElementById("member-lock").style.display = "none"; document.getElementById("members-content").classList.add("unlocked"); error.textContent = ""; } else error.textContent = "Invalid password. Please try again."; }
     function showPanel(event, panelId) { document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active")); document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active")); event.currentTarget.classList.add("active"); document.getElementById(panelId).classList.add("active"); }
     function toggleAbstract(button) { button.closest(".abstract-item").classList.toggle("open"); }
     function toggleAdminPassword() { const input = document.getElementById("admin-password"); const button = document.getElementById("show-admin-password"); input.type = input.type === "password" ? "text" : "password"; button.textContent = input.type === "password" ? "表示" : "非表示"; }
-    function unlockAdmin() { const input = document.getElementById("admin-password"); const error = document.getElementById("admin-error"); if (input.value === ACCESS_PASSWORD) { document.getElementById("admin-panel").classList.add("open"); error.textContent = ""; renderAll(); } else error.textContent = "Invalid password. Please try again."; }
+    function unlockAdmin() { const input = document.getElementById("admin-password"); const error = document.getElementById("admin-error"); if (input.value === ADMIN_PASSWORD) { document.getElementById("admin-panel").classList.add("open"); error.textContent = ""; renderAll(); } else error.textContent = "Invalid password. Please try again."; }
 
     async function saveRecord(sheetName, item, statusId) {
       const ok = await postToGas({ action:"save", sheet: sheetName, item });
       if (ok) {
         document.getElementById(statusId).textContent = "Saved. Reloading data...";
-        await new Promise(r => setTimeout(r, 1200));
+        await new Promise(r => setTimeout(r, 2000));
         await loadData();
         document.getElementById(statusId).textContent = "Saved.";
         setTimeout(() => { const el = document.getElementById(statusId); if (el) el.textContent = ""; }, 1800);
@@ -879,7 +880,7 @@
     async function deleteItem(sheetName, id) {
       if (!confirm("Delete this item?")) return;
       const ok = await postToGas({ action:"delete", sheet: sheetName, id });
-      if (ok) { await new Promise(r => setTimeout(r, 1200)); await loadData(); }
+      if (ok) { await new Promise(r => setTimeout(r, 2000)); await loadData(); }
     }
 
     function orderFor(collection) { return (state[collection]?.length || 0) + 1; }
