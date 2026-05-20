@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKYSEF 2026 | Shizuoka Kita Youth Science Engineering Forum</title>
+  <meta name="description" content="SKYSEF 2026 official concept page: international student science forum hosted by Shizuoka Kita High School." />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      color: #172033;
+      line-height: 1.75;
+      background: #f6f8fb;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input, textarea, select { font: inherit; }
+
+    :root {
+      --navy: #0b1f3a;
+      --blue: #1976d2;
+      --cyan: #00a6d6;
+      --green: #5aa832;
+      --orange: #f28c28;
+      --white: #ffffff;
+      --pale: #eef5fb;
+      --line: #d9e2ec;
+      --text: #172033;
+      --muted: #5f6f82;
+      --shadow: 0 16px 40px rgba(12, 31, 58, 0.12);
+      --radius: 22px;
+    }
+
+    .container { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+    .section { padding: 68px 0; }
+    .section.compact { padding: 44px 0; }
+    .eyebrow { color: var(--cyan); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: .82rem; }
+    .section-title { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.15; color: var(--navy); margin-top: 10px; margin-bottom: 22px; letter-spacing: -.04em; }
+    .lead { font-size: clamp(1rem, 2vw, 1.18rem); color: #405066; max-width: 880px; }
+    .jp { font-size: .92em; color: var(--muted); margin-top: 4px; }
+
+    .nav {
+      position: fixed; inset: 0 0 auto 0; z-index: 100;
+      background: rgba(255,255,255,.92); backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(217,226,236,.9);
+    }
+    .nav-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; color: var(--navy); letter-spacing: .02em; white-space: nowrap; }
+    .brand-mark { width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, var(--green), var(--cyan)); display: grid; place-items: center; color: #fff; font-weight: 900; }
+    .nav-links { display: flex; align-items: center; gap: 14px; color: #314257; font-weight: 700; font-size: .88rem; }
+    .nav-links a:hover { color: var(--blue); }
+    .admin-link {
+      border: 1px solid #b8dff1; color: #095a77; background: #ecfaff;
+      border-radius: 999px; padding: 7px 12px; cursor: pointer; font-weight: 900; font-size: .82rem;
+    }
+
+    .hero {
+      min-height: 88vh; padding-top: 72px; display: grid; align-items: center;
+      background:
+        linear-gradient(90deg, rgba(11,31,58,.92), rgba(11,31,58,.60), rgba(11,31,58,.20)),
+        url('https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0875-1024x683.jpg') center 60px/contain no-repeat;
+      color: #fff;
+    }
+    .hero-content { padding: 90px 0 70px; max-width: 860px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.24); padding: 8px 16px; border-radius: 999px; font-weight: 800; color: #d8f4ff; }
+    .hero h1 { font-size: clamp(3.2rem, 9vw, 7.4rem); line-height: .92; letter-spacing: -.08em; margin: 26px 0 22px; }
+    .hero h1 span { color: #a8e640; }
+    .hero-copy { font-size: clamp(1.2rem, 2.4vw, 1.75rem); line-height: 1.45; max-width: 820px; color: #edf7ff; font-weight: 700; }
+    .hero-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 36px; }
+    .meta-card { background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.18); border-radius: 18px; padding: 18px; }
+    .meta-card b { display: block; color: #8de7ff; font-size: .82rem; text-transform: uppercase; letter-spacing: .09em; margin-bottom: 4px; }
+
+    .concept-card, .white-card {
+      background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 42px;
+    }
+    .concept-card { max-width: 1160px; margin: 0 auto; }
+    .concept-card p + p { margin-top: 1em; }
+    .concept-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .pill { border: 1px solid #b8dff1; background: #ecfaff; color: #095a77; padding: 8px 13px; border-radius: 999px; font-weight: 800; font-size: .88rem; }
+
+    .program-bg { background: linear-gradient(180deg, #eef7fd, #f6f8fb); }
+    .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 30px; }
+    .program-card {
+      background: var(--white); border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--line); box-shadow: 0 10px 24px rgba(12,31,58,.08);
+      display: flex; flex-direction: column;
+    }
+    .program-image { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+    .program-body { padding: 22px; }
+    .program-card .num { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 14px; background: var(--navy); color: #fff; font-weight: 900; margin-bottom: 16px; }
+    .program-card h3 { color: var(--navy); font-size: 1.18rem; margin-bottom: 8px; line-height: 1.25; }
+    .program-card p { color: #405066; font-size: .95rem; }
+
+    .schedule-wrap { overflow-x: auto; border-radius: var(--radius); box-shadow: var(--shadow); margin-top: 22px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; min-width: 760px; }
+    th, td { text-align: left; padding: 15px 17px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: var(--navy); color: #fff; font-size: .92rem; letter-spacing: .04em; }
+    td.time { width: 170px; color: var(--blue); font-weight: 900; white-space: nowrap; }
+    .venue { color: var(--muted); font-size: .93rem; }
+    .timeline-note { color: var(--muted); font-size: .95rem; margin-top: 10px; }
+
+    .timeline-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+    .timeline-tab {
+      border: 1px solid #b8c7d7; background: #fff; color: var(--navy);
+      border-radius: 999px; padding: 10px 18px; font-weight: 900; cursor: pointer;
+    }
+    .timeline-tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .timeline-panel { display: none; }
+    .timeline-panel.active { display: block; animation: fadeIn .25s ease; }
+
+    .members-section { background: linear-gradient(180deg, #f6f8fb, #eaf6fd); }
+    .compact-lock {
+      margin-top: 22px; background: #fff; border: 1px solid var(--line); border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(12,31,58,.08); padding: 18px;
+      display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: end; max-width: 620px;
+    }
+    .compact-lock label { display: block; font-weight: 900; color: var(--navy); margin-bottom: 5px; font-size: .92rem; }
+    .compact-lock input { width: 100%; padding: 10px 12px; border: 1px solid #b8c7d7; border-radius: 12px; font-size: .96rem; outline: none; }
+    .compact-lock input:focus { border-color: var(--cyan); box-shadow: 0 0 0 4px rgba(0,166,214,.12); }
+    .primary-button, .secondary-button, .danger-button {
+      border: 0; border-radius: 999px; padding: 11px 18px; font-weight: 900; cursor: pointer; white-space: nowrap;
+    }
+    .primary-button { background: var(--navy); color: #fff; }
+    .primary-button:hover { background: #14385f; }
+    .secondary-button { background: #eef5fb; color: var(--navy); border: 1px solid #c8d6e4; }
+    .danger-button { background: #fff0f0; color: #b3261e; border: 1px solid #f2b8b5; }
+    .error-message { color: #d93025; font-weight: 800; margin-top: 8px; min-height: 1.4em; font-size: .9rem; }
+    .success-message { color: #137333; font-weight: 800; margin-top: 8px; min-height: 1.4em; font-size: .9rem; }
+    .members-content { display: none; margin-top: 28px; }
+    .members-content.unlocked { display: block; animation: fadeIn .35s ease; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+    .tab { border: 1px solid #b8c7d7; background: #fff; color: var(--navy); border-radius: 999px; padding: 10px 17px; font-weight: 900; cursor: pointer; }
+    .tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .subsection-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 10px 24px rgba(12,31,58,.08); padding: 24px; margin-bottom: 16px; }
+
+    .abstract-list { display: grid; gap: 14px; margin-top: 18px; }
+    .abstract-item { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #fff; }
+    .abstract-head { width: 100%; border: 0; background: #fff; text-align: left; padding: 18px 20px; cursor: pointer; display: flex; justify-content: space-between; gap: 18px; align-items: center; }
+    .abstract-head:hover { background: #f8fbfe; }
+    .abstract-code { display:block; color: var(--cyan); font-weight: 900; font-size: .86rem; }
+    .abstract-title { display:block; color: var(--navy); font-weight: 900; font-size: 1.05rem; margin-top: 2px; }
+    .abstract-school { display:block; color: var(--muted); font-size: .9rem; margin-top: 2px; }
+    .abstract-plus { font-size: 1.5rem; color: var(--blue); font-weight: 900; }
+    .abstract-body { display: none; padding: 0 20px 20px; color: #405066; white-space: pre-wrap; }
+    .abstract-item.open .abstract-body { display: block; }
+    .abstract-item.open .abstract-plus { transform: rotate(45deg); }
+
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-top: 18px; }
+    .video-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 18px rgba(12,31,58,.07); }
+    .video-frame { position: relative; aspect-ratio: 16 / 9; background: #071426; }
+    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-info { padding: 18px; }
+    .video-info h3 { color: var(--navy); font-size: 1.1rem; margin-bottom: 6px; }
+    .video-info p { color: var(--muted); font-size: .93rem; }
+    .video-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .video-link { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; padding: 8px 12px; background: #eef5fb; color: var(--navy); border: 1px solid #c8d6e4; font-weight: 900; font-size: .86rem; }
+    .video-link:hover { background: #e0edf8; }
+
+    .schools { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+    .school { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; min-height: 96px; }
+    .flag-img { width: 56px; height: 38px; object-fit: cover; border-radius: 8px; border: 1px solid #d9e2ec; box-shadow: 0 4px 10px rgba(12,31,58,.08); background: #fff; }
+    .country { color: var(--cyan); font-weight: 900; font-size: .8rem; text-transform: uppercase; }
+    .school-name { color: var(--navy); font-weight: 800; margin-top: 3px; }
+
+    .gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+    .gallery img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 16px; transition: transform .25s ease, box-shadow .25s ease; }
+    .gallery img:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+    .application-card {
+      background: linear-gradient(135deg, var(--navy), #123d68);
+      color: #fff; border-radius: 30px; padding: 46px;
+      display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 22px;
+      box-shadow: var(--shadow);
+    }
+    .application-card h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.15; }
+    .application-card p { color: #cfe6f5; margin-top: 12px; max-width: 720px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; background: #fff; color: var(--navy); border-radius: 999px; padding: 14px 22px; font-weight: 900; white-space: nowrap; }
+    .application-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 26px;
+      align-items: stretch;
+    }
+    .application-link-card {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 18px;
+      padding: 18px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 230px;
+      height: 100%;
+    }
+    .application-link-card strong {
+      font-size: 1.05rem;
+      line-height: 1.3;
+      min-height: 2.8em;
+      display: block;
+    }
+    .application-link-card span:not(.button) {
+      color: #cfe6f5;
+      font-size: .9rem;
+      line-height: 1.55;
+      margin-top: 8px;
+      flex: 1 1 auto;
+      display: block;
+    }
+    .application-link-card .button {
+      flex: 0 0 auto;
+      width: 150px;
+      min-height: 40px;
+      padding: 0 16px;
+      margin-top: auto;
+      align-self: flex-start;
+      font-size: .9rem;
+      line-height: 1;
+    }
+    .application-link-card.disabled { opacity: .68; }
+    footer { background: #071426; color: #9fb0c4; padding: 34px 0; text-align: center; }
+
+    #admin-page { display: none; padding-top: 72px; min-height: 100vh; }
+    body.admin-mode #main-page { display: none; }
+    body.admin-mode #admin-page { display: block; }
+    .admin-topbar { background: #fff; border-bottom: 1px solid var(--line); padding: 16px 0; }
+    .admin-topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .admin-panel { display: none; margin-top: 26px; }
+    .admin-panel.open { display: block; animation: fadeIn .35s ease; }
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+    .admin-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 10px 24px rgba(12,31,58,.08); padding: 24px; }
+    .admin-card.full { grid-column: 1 / -1; }
+    .field { margin-top: 13px; }
+    .field label { display: block; color: var(--navy); font-weight: 900; font-size: .9rem; margin-bottom: 5px; }
+    .field input, .field textarea, .field select { width: 100%; border: 1px solid #b8c7d7; border-radius: 12px; padding: 10px 12px; outline: none; background: #fff; }
+    .field textarea { min-height: 110px; resize: vertical; }
+    .button-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .admin-list { display: grid; gap: 10px; margin-top: 16px; max-height: 560px; overflow: auto; padding-right: 4px; }
+    .admin-item { border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: #f8fbfe; }
+    .admin-item-title { font-weight: 900; color: var(--navy); }
+    .admin-item-meta { color: var(--muted); font-size: .9rem; margin-top: 2px; word-break: break-all; }
+    .admin-lock-row { max-width: 620px; display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: end; margin-top: 18px; }
+    .small-note { margin-top: 10px; color: var(--muted); font-size: .9rem; }
+    .admin-three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 1100px) {
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .schools { grid-template-columns: repeat(2, 1fr); }
+      .admin-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .nav-links a { display: none; }
+      .nav-links { gap: 0; }
+      .hero-meta, .concept-columns, .application-card { grid-template-columns: 1fr; }
+      .gallery, .application-grid { grid-template-columns: repeat(2, 1fr); }
+      .section { padding: 52px 0; }
+      .hero { min-height: auto; background-position: center top; }
+      .compact-lock, .admin-lock-row, .admin-three { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 620px) {
+      .cards, .schools, .gallery, .application-grid { grid-template-columns: 1fr; }
+      .concept-card { padding: 26px; }
+      .hero h1 { letter-spacing: -.05em; }
+      table { min-width: 620px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="brand" onclick="showMainPage()"><span class="brand-mark">S</span><span>SKYSEF 2026</span></a>
+      <div class="nav-links">
+        <a href="#concept">Concept</a>
+        <a href="#program">Program</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#schools">Schools</a>
+        <a href="#members">Abstract / Video</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#application">Application</a>
+        <button class="admin-link" onclick="showAdminPage()">Admin</button>
+      </div>
+    </div>
+  </nav>
+
+  <div id="main-page">
+    <header id="top" class="hero">
+      <div class="container hero-content">
+        <div class="hero-badge">Shizuoka Kita Youth Science Engineering Forum</div>
+        <h1>SKYSEF <span>2026</span></h1>
+        <p class="hero-copy">Young scientists share research, discuss evidence, and collaborate across borders for a sustainable society.</p>
+        <div class="hero-meta">
+          <div class="meta-card"><b>Date</b>August 2–5, 2026</div>
+          <div class="meta-card"><b>Host</b>Shizuoka Kita High School</div>
+          <div class="meta-card"><b>Language</b>English</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="concept" class="section">
+        <div class="container">
+          <div class="concept-card">
+            <div class="eyebrow">Concept</div>
+            <h2 class="section-title">Science communication for the next generation</h2>
+            <div class="concept-columns">
+              <div>
+                <p>SKYSEF is an international forum where junior and senior high school students discuss sustainable society and environment in the 21st century. Students share research in science, technology, mathematics and ICT, then consider what actions can be taken based on their findings.</p>
+                <p>Since its launch in 2012, SKYSEF has connected schools that actively promote inquiry-based research. The forum aims to develop scientific literacy, independent learning, and the ability to discuss scientific ideas in English with peers from different countries and regions.</p>
+              </div>
+              <p class="jp">SKYSEF（Shizuoka Kita Youth Science Engineering Forum）は、21世紀における持続可能な社会や環境のあり方について、中高生が主体的に議論することを目的とした国際フォーラムです。世界各国から集まった生徒たちは、科学・技術・数学に関するテーマについて情報を共有し、意見を交わしながら、各自の研究をもとに「どのような行動をとるべきか」を共に考えます。またSKYSEFでは、国内外の中高生が一堂に会する貴重な機会だからこそ得られる学びを大切にしています。</p>
+            </div>
+            <div class="pill-row">
+              <span class="pill">Research Presentation</span>
+              <span class="pill">Poster Session</span>
+              <span class="pill">International Joint Project</span>
+              <span class="pill">Cultural Exchange</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="program" class="section program-bg">
+        <div class="container">
+          <div class="eyebrow">Main Program</div>
+          <h2 class="section-title">Core activities</h2>
+          <p class="lead">SKYSEF is structured around research presentation, poster discussion, international joint projects, and cultural exchange. Each activity turns student research into communication, collaboration, and action.</p>
+          <div class="cards">
+            <article class="program-card">
+              <img class="program-image" src="https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0296-768x512.jpg" alt="Oral Presentation" />
+              <div class="program-body"><div class="num">01</div><h3>Oral Presentation</h3><p>Students present their research outcomes in English and receive questions from international peers and specialists.</p></div>
+            </article>
+            <article class="program-card">
+              <img class="program-image" src="https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0235-768x512.jpg" alt="Poster Session" />
+              <div class="program-body"><div class="num">02</div><h3>Poster Session</h3><p>Participants exchange ideas through poster-based dialogue, discussing their methods, data, and conclusions with the audience.</p></div>
+            </article>
+            <article class="program-card">
+              <img class="program-image" src="https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0349-768x512.jpg" alt="International Joint Project" />
+              <div class="program-body"><div class="num">03</div><h3>International Joint Project</h3><p>Mixed teams collaborate on scientific tasks, using diverse perspectives to solve problems through inquiry.</p></div>
+            </article>
+            <article class="program-card">
+              <img class="program-image" src="https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0705-768x512.jpg" alt="Cultural Exchange" />
+              <div class="program-body"><div class="num">04</div><h3>Cultural Exchange</h3><p>Participants deepen mutual understanding through cultural performance and informal communication.</p></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="timeline" class="section compact">
+        <div class="container">
+          <div class="eyebrow">Timeline</div>
+          <h2 class="section-title">SKYSEF 2026 Timeline / Venue</h2>
+          <p class="lead">Choose a date to view the schedule for each day.</p>
+          <p class="timeline-note">Draft schedule. Final information should be confirmed before publication.</p>
+
+          <div class="timeline-tabs">
+            <button class="timeline-tab active" onclick="showTimelineDay(event, 'day-aug2')">Aug. 2</button>
+            <button class="timeline-tab" onclick="showTimelineDay(event, 'day-aug3')">Aug. 3</button>
+            <button class="timeline-tab" onclick="showTimelineDay(event, 'day-aug4')">Aug. 4</button>
+            <button class="timeline-tab" onclick="showTimelineDay(event, 'day-aug5')">Aug. 5</button>
+          </div>
+
+          <div id="day-aug2" class="timeline-panel active">
+            <div class="schedule-wrap">
+              <table><thead><tr><th>Time</th><th>Program</th><th>Venue</th></tr></thead><tbody>
+                <tr><td class="time">13:00-13:30</td><td>Registration <span class="jp">受付</span></td><td class="venue">Conference Hall - Winds, 11F / 会議ホール・風</td></tr>
+                <tr><td class="time">13:40-14:05</td><td>Opening Ceremony</td><td class="venue">Conference Hall - Winds, 11F</td></tr>
+                <tr><td class="time">14:20-15:20</td><td>Keynote Address <span class="jp">基調講演</span></td><td class="venue">Conference Hall - Winds, 11F / 会議ホール・風</td></tr>
+                <tr><td class="time">15:45-17:45</td><td>Welcome Reception, Cultural Performance I <span class="jp">歓迎レセプション・文化交流I</span></td><td class="venue">Conference Rooms 1001-1 and 1001-2, 10F</td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <div id="day-aug3" class="timeline-panel">
+            <div class="schedule-wrap">
+              <table><thead><tr><th>Time</th><th>Program</th><th>Venue</th></tr></thead><tbody>
+                <tr><td class="time">09:00</td><td>GRANSHIP opens</td><td class="venue">GRANSHIP</td></tr>
+                <tr><td class="time">09:30-12:00</td><td>Oral Presentation <span class="jp">口頭発表</span></td><td class="venue">Room 904, 9F / Room 908, 9F / Room 1001-1, 10F / Room 1001-2, 10F / Room 1002, 10F</td></tr>
+                <tr><td class="time">12:00-14:00</td><td>Lunch</td><td class="venue">-</td></tr>
+                <tr><td class="time">14:00-14:30</td><td>Poster Setup <span class="jp">ポスター準備</span></td><td class="venue">Main Hall - Ocean, 1F / 大ホール・海</td></tr>
+                <tr><td class="time">14:30-17:00</td><td>Poster Session <span class="jp">ポスターセッション</span></td><td class="venue">Main Hall - Ocean, 1F</td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <div id="day-aug4" class="timeline-panel">
+            <div class="schedule-wrap">
+              <table><thead><tr><th>Time</th><th>Program</th><th>Venue</th></tr></thead><tbody>
+                <tr><td class="time">09:00</td><td>GRANSHIP opens</td><td class="venue">GRANSHIP</td></tr>
+                <tr><td class="time">09:30-12:00</td><td>International Joint Project<br /><span class="jp">For Teachers: Guided Tour / Meet at the entrance of GRANSHIP</span></td><td class="venue">Main Hall - Ocean, 1F</td></tr>
+                <tr><td class="time">12:00-14:00</td><td>Lunch</td><td class="venue">-</td></tr>
+                <tr><td class="time">14:00-17:00</td><td>International Joint Project</td><td class="venue">Main Hall - Ocean, 1F</td></tr>
+              </tbody></table>
+            </div>
+          </div>
+
+          <div id="day-aug5" class="timeline-panel">
+            <div class="schedule-wrap">
+              <table><thead><tr><th>Time</th><th>Program</th><th>Venue</th></tr></thead><tbody>
+                <tr><td class="time">09:00</td><td>GRANSHIP opens</td><td class="venue">GRANSHIP</td></tr>
+                <tr><td class="time">09:30-11:00</td><td>International Joint Project</td><td class="venue">Main Hall - Ocean, 1F</td></tr>
+                <tr><td class="time">11:00-13:00</td><td>Lunch</td><td class="venue">-</td></tr>
+                <tr><td class="time">13:00-15:00</td><td>Cultural Performance II</td><td class="venue">Main Hall - Ocean, 1F</td></tr>
+                <tr><td class="time">15:00-15:30</td><td>Questionnaire and Certificate of Participation</td><td class="venue">Main Hall - Ocean, 1F</td></tr>
+                <tr><td class="time">15:30-15:45</td><td>Commendation Ceremony <span class="jp">表彰式</span></td><td class="venue">Main Hall - Ocean, 1F</td></tr>
+                <tr><td class="time">15:45-16:00</td><td>Closing Ceremony <span class="jp">閉会式</span></td><td class="venue">Main Hall - Ocean, 1F</td></tr>
+              </tbody></table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="schools" class="section compact program-bg">
+        <div class="container">
+          <div class="eyebrow">Participants</div>
+          <h2 class="section-title">Participating schools</h2>
+          <div id="school-list" class="schools"></div>
+        </div>
+      </section>
+
+      <section id="members" class="section members-section">
+        <div class="container">
+          <div class="eyebrow">Protected Contents</div>
+          <h2 class="section-title">Abstracts and Video Introduction of Research</h2>
+          <p class="lead">These materials are intended for participating schools and staff. Enter the shared password to view abstracts and video introductions.</p>
+
+          <div id="member-lock" class="compact-lock">
+            <div>
+              <label for="member-password">Password</label>
+              <input id="member-password" type="password" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter'){unlockMembers();}" />
+              <div id="member-error" class="error-message"></div>
+            </div>
+            <button class="primary-button" onclick="unlockMembers()">Unlock</button>
+          </div>
+
+          <div id="members-content" class="members-content">
+            <div class="tabs">
+              <button class="tab active" onclick="showPanel(event, 'abstract-panel')">Abstracts</button>
+              <button class="tab" onclick="showPanel(event, 'video-panel')">Video Introduction of Research</button>
+            </div>
+            <div id="abstract-panel" class="panel active">
+              <div class="subsection-card">
+                <h3>Research Abstracts</h3>
+                <p class="timeline-note">Abstracts added from the Admin page are shown here.</p>
+                <div id="abstract-list" class="abstract-list"></div>
+              </div>
+            </div>
+            <div id="video-panel" class="panel">
+              <div class="subsection-card">
+                <h3>Video Introduction of Research</h3>
+                <p class="timeline-note">YouTube videos added from the Admin page are shown here. The layout supports about 20 videos.</p>
+                <div id="video-list" class="video-grid"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery" class="section">
+        <div class="container">
+          <div class="eyebrow">Photo Gallery</div>
+          <h2 class="section-title">Moments of inquiry and friendship</h2>
+          <div id="gallery-list" class="gallery"></div>
+        </div>
+      </section>
+
+      <section id="application" class="section compact">
+        <div class="container">
+          <div class="application-card">
+            <div>
+              <div class="eyebrow" style="color:#8de7ff;">Application</div>
+              <h2>Application form for schools in Japan</h2>
+              <p>Schools in Japan that wish to participate in SKYSEF 2026 can submit their application through the form below.</p>
+              <p class="jp" style="color:#cfe6f5;">国内校の参加希望者は、以下のフォームから申し込みできます。</p>
+            </div>
+            <div id="application-list" class="application-grid">
+              <a class="application-link-card" href="https://forms.gle/KFqLg73bZwzLNQ3c9" target="_blank" rel="noopener">
+                <strong>Form 2</strong>
+                <span>Application form for schools in Japan.</span>
+                <span class="button">Open form</span>
+              </a>
+              <a class="application-link-card" href="https://forms.gle/WbYSLvai7qazd3rR9" target="_blank" rel="noopener">
+                <strong>Form 5</strong>
+                <span>For adding Abstract of research by 6/12.</span>
+                <span class="button">Open form</span>
+              </a>
+              <a class="application-link-card" href="https://forms.gle/KFovEZWS7ikqkaxT7" target="_blank" rel="noopener">
+                <strong>Photo &amp; School Introduction</strong>
+                <span>Upload school introduction as a PDF file in A4 size and team photo by 6/12.</span>
+                <span class="button">Open form</span>
+              </a>
+              <a class="application-link-card" href="https://forms.gle/6E5oW2t9SciJD2dy9" target="_blank" rel="noopener">
+                <strong>Presentation Data</strong>
+                <span>SKYSEF2026 data submit. Submit presentation file by 7/30.</span>
+                <span class="button">Open form</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">Shizuoka Kita Junior and Senior High School<br />© 2026 SKYSEF. All Rights Reserved.</div>
+    </footer>
+  </div>
+
+  <section id="admin-page">
+    <div class="admin-topbar">
+      <div class="container admin-topbar-inner">
+        <strong>Content Management</strong>
+        <button class="secondary-button" onclick="showMainPage()">Back to Main Page</button>
+      </div>
+    </div>
+
+    <div class="section compact">
+      <div class="container">
+        <div class="eyebrow">Admin</div>
+        <h2 class="section-title">Content Management</h2>
+        <p class="lead">Use this page to add, edit, or delete schools, abstracts, YouTube research introduction videos, application forms, and gallery photos. Data is saved to Google Spreadsheet through Google Apps Script.</p>
+
+        <div id="admin-lock" class="admin-lock-row">
+          <div class="field" style="margin-top:0;">
+            <label for="admin-password">Admin Password</label>
+            <input id="admin-password" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter'){unlockAdmin();}" />
+          </div>
+          <button class="secondary-button" id="show-admin-password" onclick="toggleAdminPassword()">表示</button>
+          <button class="primary-button" onclick="unlockAdmin()">Open Admin</button>
+        </div>
+        <div id="admin-error" class="error-message"></div>
+        <p class="small-note">Current shared password is set in the script as <code>ACCESS_PASSWORD</code>. Static HTML password control is not server-side security.</p>
+
+        <div id="admin-panel" class="admin-panel">
+          <div class="admin-grid">
+            <div class="admin-card">
+              <h3>Manage Abstracts</h3>
+              <input type="hidden" id="abstract-edit-index" value="" />
+              <div class="field"><label for="abstract-code">Code</label><input id="abstract-code" placeholder="O-01 / P-01" /></div>
+              <div class="field"><label for="abstract-title-input">Title</label><input id="abstract-title-input" placeholder="Research title" /></div>
+              <div class="field"><label for="abstract-school-input">School / Country</label><input id="abstract-school-input" placeholder="School Name / Country" /></div>
+              <div class="field"><label for="abstract-body-input">Abstract</label><textarea id="abstract-body-input" placeholder="Purpose, methods, results, and conclusion"></textarea></div>
+              <div class="button-row">
+                <button class="primary-button" onclick="saveAbstract()">Save Abstract</button>
+                <button class="secondary-button" onclick="clearAbstractForm()">Clear</button>
+              </div>
+              <div id="abstract-status" class="success-message"></div>
+              <div id="admin-abstract-list" class="admin-list"></div>
+            </div>
+
+            <div class="admin-card">
+              <h3>Manage Videos</h3>
+              <input type="hidden" id="video-edit-index" value="" />
+              <div class="field"><label for="video-title-input">Title</label><input id="video-title-input" placeholder="O-01: Research title" /></div>
+              <div class="field"><label for="video-school-input">School / Country</label><input id="video-school-input" placeholder="School Name / Country" /></div>
+              <div class="field"><label for="video-url-input">YouTube URL</label><input id="video-url-input" placeholder="https://youtu.be/NtJnix-9niI?si=..." /></div>
+              <div class="field"><label for="video-desc-input">Description</label><textarea id="video-desc-input" placeholder="Short description or viewing notes"></textarea></div>
+              <div class="button-row">
+                <button class="primary-button" onclick="saveVideo()">Save Video</button>
+                <button class="secondary-button" onclick="clearVideoForm()">Clear</button>
+                <button class="secondary-button" onclick="testVideoUrl()">Test URL</button>
+              </div>
+              <div id="video-status" class="success-message"></div>
+              <div id="admin-video-list" class="admin-list"></div>
+            </div>
+
+            <div class="admin-card full">
+              <h3>Manage Schools</h3>
+              <input type="hidden" id="school-edit-index" value="" />
+              <div class="admin-three">
+                <div class="field"><label for="school-country-input">Country / Region</label><input id="school-country-input" placeholder="Japan / Thailand / Taiwan / Indonesia / Australia / Macau / Guam" /></div>
+                <div class="field"><label for="school-name-input">School Name</label><input id="school-name-input" placeholder="School name" /></div>
+                <div class="field"><label for="school-flag-input">Flag Image URL</label><input id="school-flag-input" placeholder="https://.../Flag_of_Japan.svg.png" /></div>
+              </div>
+              <div class="button-row">
+                <button class="primary-button" onclick="saveSchool()">Save School</button>
+                <button class="secondary-button" onclick="clearSchoolForm()">Clear</button>
+                <button class="secondary-button" onclick="fillFlag('JP')">JP</button>
+                <button class="secondary-button" onclick="fillFlag('TH')">TH</button>
+                <button class="secondary-button" onclick="fillFlag('TW')">TW</button>
+                <button class="secondary-button" onclick="fillFlag('ID')">ID</button>
+                <button class="secondary-button" onclick="fillFlag('AU')">AU</button>
+                <button class="secondary-button" onclick="fillFlag('MO')">MO</button>
+                <button class="secondary-button" onclick="fillFlag('GU')">GU</button>
+              </div>
+              <div id="school-status" class="success-message"></div>
+              <div id="admin-school-list" class="admin-list"></div>
+            </div>
+
+            <div class="admin-card">
+              <h3>Manage Application Forms</h3>
+              <input type="hidden" id="application-edit-id" value="" />
+              <div class="field"><label for="application-title-input">Title</label><input id="application-title-input" placeholder="Form 2 / Form 5" /></div>
+              <div class="field"><label for="application-desc-input">English Description</label><textarea id="application-desc-input" placeholder="Description shown on the card"></textarea></div>
+              <div class="field"><label for="application-desc-jp-input">Japanese Description</label><textarea id="application-desc-jp-input" placeholder="日本語説明"></textarea></div>
+              <div class="field"><label for="application-url-input">Form URL</label><input id="application-url-input" placeholder="https://forms.gle/..." /></div>
+              <div class="field"><label for="application-button-input">Button Text</label><input id="application-button-input" placeholder="Open form / URL pending" /></div>
+              <div class="button-row">
+                <button class="primary-button" onclick="saveApplication()">Save Application</button>
+                <button class="secondary-button" onclick="clearApplicationForm()">Clear</button>
+              </div>
+              <div id="application-status" class="success-message"></div>
+              <div id="admin-application-list" class="admin-list"></div>
+            </div>
+
+            <div class="admin-card">
+              <h3>Manage Gallery</h3>
+              <input type="hidden" id="gallery-edit-id" value="" />
+              <div class="field"><label for="gallery-src-input">Image URL</label><input id="gallery-src-input" placeholder="https://...jpg" /></div>
+              <div class="field"><label for="gallery-alt-input">Alt Text</label><input id="gallery-alt-input" placeholder="Photo description" /></div>
+              <div class="button-row">
+                <button class="primary-button" onclick="saveGalleryPhoto()">Save Photo</button>
+                <button class="secondary-button" onclick="clearGalleryForm()">Clear</button>
+              </div>
+              <div id="gallery-status" class="success-message"></div>
+              <div id="admin-gallery-list" class="admin-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const ACCESS_PASSWORD = "skysef";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwPGr_rEp3Irnqg6749z94B8KxRBwy80Z2gdR53d7kwe9mqS9WAKabMiNWV2QTC8cQv/exec"; // デプロイ後のGAS Web App URLを入れてください。
+
+    const FLAGS = {
+      ID: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1280px-Flag_of_Indonesia.svg.png",
+      AU: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/1920px-Flag_of_Australia.svg.png",
+      JP: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/1280px-Flag_of_Japan.svg.png",
+      MO: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Flag_of_Macau.svg/1280px-Flag_of_Macau.svg.png",
+      GU: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Flag_of_Guam.svg/1920px-Flag_of_Guam.svg.png",
+      TH: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/1280px-Flag_of_Thailand.svg.png",
+      TW: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Flag_of_the_Republic_of_China.svg/1280px-Flag_of_the_Republic_of_China.svg.png"
+    };
+
+    const DEFAULT_DATA = {
+      schools: [
+        { id:"school-001", order:1, country:"Japan", name:"Shizuoka Kita High School", flag:FLAGS.JP, visible:true },
+        { id:"school-002", order:2, country:"Taiwan", name:"The Affiliated Senior High School of National Chi-Nan University", flag:FLAGS.TW, visible:true },
+        { id:"school-003", order:3, country:"Taiwan", name:"Taichung Municipal HUI-WEN High School", flag:FLAGS.TW, visible:true },
+        { id:"school-004", order:4, country:"Taiwan", name:"National Lan-Yang Girls' Senior High School", flag:FLAGS.TW, visible:true },
+        { id:"school-005", order:5, country:"Taiwan", name:"Taichung Municipal Taichung First Senior High School", flag:FLAGS.TW, visible:true },
+        { id:"school-006", order:6, country:"Taiwan", name:"To be confirmed", flag:FLAGS.TW, visible:true },
+        { id:"school-007", order:7, country:"Thailand", name:"Princess Chulabhorn Science High School Loei", flag:FLAGS.TH, visible:true },
+        { id:"school-008", order:8, country:"Thailand", name:"Holy Redeemer North Eastern Region School", flag:FLAGS.TH, visible:true },
+        { id:"school-009", order:9, country:"Thailand", name:"Holy Redeemer School Khon Kaen", flag:FLAGS.TH, visible:true },
+        { id:"school-010", order:10, country:"Guam", name:"St. John's School", flag:FLAGS.GU, visible:true },
+        { id:"school-011", order:11, country:"Australia", name:"West Moreton Anglican College", flag:FLAGS.AU, visible:true },
+        { id:"school-012", order:12, country:"Indonesia", name:"Mentari Intercultural School Jakarta", flag:FLAGS.ID, visible:true },
+        { id:"school-013", order:13, country:"Macau", name:"To be confirmed", flag:FLAGS.MO, visible:true },
+        { id:"school-014", order:14, country:"Japan", name:"Hyogo Prefectural Tatsuno High School", flag:FLAGS.JP, visible:true },
+        { id:"school-015", order:15, country:"Japan", name:"Yasuda Gakuen Junior and Senior High School", flag:FLAGS.JP, visible:true },
+        { id:"school-016", order:16, country:"Japan", name:"Osaka Prefectural Senri High School", flag:FLAGS.JP, visible:true },
+        { id:"school-017", order:17, country:"Japan", name:"Shizuoka Prefectural Yaizu Chuo High School", flag:FLAGS.JP, visible:true },
+        { id:"school-018", order:18, country:"Japan", name:"Takada Junior & Senior High School", flag:FLAGS.JP, visible:true },
+        { id:"school-019", order:19, country:"Japan", name:"Shizuoka Agriculture High School", flag:FLAGS.JP, visible:true }
+      ],
+      abstracts: [
+        { id:"abstract-001", order:1, code:"O-01", title:"Research Title Here", school:"School Name / Country", body:"Paste the student research abstract here. Include purpose, method, results, and conclusion in concise form.", visible:true },
+        { id:"abstract-002", order:2, code:"P-01", title:"Poster Presentation Title Here", school:"School Name / Country", body:"Paste the poster abstract here. Use this area for keywords, research questions, or short summaries if necessary.", visible:true }
+      ],
+      videos: [
+        { id:"video-001", order:1, title:"Sample: Research Introduction", school:"School Name / Country", url:"https://youtu.be/NtJnix-9niI?si=CfqT5C79DED1bQzy", description:"Sample video URL format.", visible:true }
+      ],
+      applications: [
+        { id:"app-001", order:1, title:"Form 2", description:"Application form for schools in Japan.", description_jp:"", url:"https://forms.gle/KFqLg73bZwzLNQ3c9", button:"Open form", enabled:true },
+        { id:"app-002", order:2, title:"Form 5", description:"For adding Abstract of research by 6/12.", description_jp:"", url:"https://forms.gle/WbYSLvai7qazd3rR9", button:"Open form", enabled:true },
+        { id:"app-003", order:3, title:"Photo & School Introduction", description:"Upload school introduction as a PDF file in A4 size and team photo by 6/12.", description_jp:"", url:"https://forms.gle/KFovEZWS7ikqkaxT7", button:"Open form", enabled:true },
+        { id:"app-004", order:4, title:"Presentation Data", description:"SKYSEF2026 data submit. Submit presentation file by 7/30.", description_jp:"", url:"https://forms.gle/6E5oW2t9SciJD2dy9", button:"Open form", enabled:true }
+      ],
+      gallery: [
+        { id:"gallery-001", order:1, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0038-300x200.jpg", alt:"International communication", visible:true },
+        { id:"gallery-002", order:2, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0090-300x200.jpg", alt:"Keynote address", visible:true },
+        { id:"gallery-003", order:3, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0196-300x200.jpg", alt:"Opening activity", visible:true },
+        { id:"gallery-004", order:4, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0230-300x200.jpg", alt:"Research discussion", visible:true },
+        { id:"gallery-005", order:5, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0117-768x512.jpg", alt:"Engineering activity", visible:true },
+        { id:"gallery-006", order:6, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0317-300x200.jpg", alt:"Joint project discussion", visible:true },
+        { id:"gallery-007", order:7, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0456-768x512.jpg", alt:"SKYSEF group activity", visible:true },
+        { id:"gallery-008", order:8, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0471-768x512.jpg", alt:"SKYSEF group activity", visible:true },
+        { id:"gallery-009", order:9, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0673-768x512.jpg", alt:"SKYSEF group activity", visible:true },
+        { id:"gallery-010", order:10, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0497-300x200.jpg", alt:"Project result", visible:true },
+        { id:"gallery-011", order:11, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0814-768x512.jpg", alt:"SKYSEF group activity", visible:true },
+        { id:"gallery-012", order:12, src:"https://shizukita.jp/senior/wp-content/uploads/sites/3/2025/08/094A0846-768x512.jpg", alt:"SKYSEF group activity", visible:true }
+      ]
+    };
+
+    let state = JSON.parse(JSON.stringify(DEFAULT_DATA));
+
+    function escapeHTML(str) {
+      return String(str || "").replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+    }
+    function newId(prefix) { return prefix + "-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8); }
+    function isGasConfigured() { return GAS_WEB_APP_URL && !GAS_WEB_APP_URL.includes("PASTE_YOUR_GAS_WEB_APP_URL_HERE"); }
+    function sortItems(arr) { return [...(arr || [])].sort((a,b) => Number(a.order || 9999) - Number(b.order || 9999)); }
+    function visibleItems(arr) { return sortItems(arr).filter(x => x.visible !== false && x.enabled !== false); }
+
+    function jsonp(params = {}) {
+      if (!isGasConfigured()) return Promise.reject(new Error("GAS_WEB_APP_URL is not configured."));
+      return new Promise((resolve, reject) => {
+        const callbackName = "skysefCallback_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+        const script = document.createElement("script");
+        const url = new URL(GAS_WEB_APP_URL);
+        Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
+        url.searchParams.set("callback", callbackName);
+        window[callbackName] = (data) => {
+          cleanup(); resolve(data);
+        };
+        function cleanup() {
+          delete window[callbackName];
+          script.remove();
+        }
+        script.onerror = () => { cleanup(); reject(new Error("Could not load GAS data.")); };
+        script.src = url.toString();
+        document.body.appendChild(script);
+      });
+    }
+
+    async function postToGas(payload) {
+      if (!isGasConfigured()) {
+        alert("GAS_WEB_APP_URL が未設定です。Apps Scriptをデプロイし、URLをindex.htmlに貼り付けてください。");
+        return false;
+      }
+      payload.adminPassword = ACCESS_PASSWORD;
+      try {
+        await fetch(GAS_WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+        return true;
+      } catch (e) {
+        alert("GASへの保存に失敗しました。Web App URLとデプロイ権限を確認してください。");
+        console.error(e);
+        return false;
+      }
+    }
+
+    async function loadData() {
+      if (!isGasConfigured()) {
+        console.warn("GAS_WEB_APP_URL is not configured. Default data is used.");
+        renderAll();
+        return;
+      }
+      try {
+        const data = await jsonp({ action: "listAll" });
+        if (data && data.ok) {
+          state = {
+            schools: data.schools?.length ? data.schools : DEFAULT_DATA.schools,
+            abstracts: data.abstracts?.length ? data.abstracts : DEFAULT_DATA.abstracts,
+            videos: data.videos?.length ? data.videos : DEFAULT_DATA.videos,
+            applications: data.applications?.length ? data.applications : DEFAULT_DATA.applications,
+            gallery: data.gallery?.length ? data.gallery : DEFAULT_DATA.gallery
+          };
+        }
+      } catch (e) {
+        console.warn("GAS read failed. Default data is used.", e);
+      }
+      renderAll();
+    }
+
+    function renderAll() { renderSchools(); renderAbstracts(); renderVideos(); renderApplications(); renderGallery(); }
+
+    function youtubeVideoId(url) {
+      let value = String(url || "").trim().replace(/&amp;/g, "&");
+      if (!value) return "";
+      let id = "";
+      try {
+        const u = new URL(value);
+        const host = u.hostname.replace(/^www\./, "");
+        if (host === "youtu.be") id = u.pathname.split("/").filter(Boolean)[0] || "";
+        else if (["youtube.com", "m.youtube.com", "music.youtube.com", "youtube-nocookie.com"].includes(host)) {
+          if (u.pathname === "/watch") id = u.searchParams.get("v") || "";
+          else if (u.pathname.startsWith("/embed/")) id = u.pathname.split("/")[2] || "";
+          else if (u.pathname.startsWith("/shorts/")) id = u.pathname.split("/")[2] || "";
+          else if (u.pathname.startsWith("/live/")) id = u.pathname.split("/")[2] || "";
+        }
+      } catch (e) { id = value; }
+      id = String(id || "").split("?")[0].split("&")[0].replace(/[^A-Za-z0-9_-]/g, "");
+      return id.length >= 6 ? id : "";
+    }
+    function youtubeEmbed(url) { const id = youtubeVideoId(url); return id ? "https://www.youtube.com/embed/" + id + "?rel=0&modestbranding=1" : ""; }
+    function youtubeWatch(url) { const id = youtubeVideoId(url); return id ? "https://www.youtube.com/watch?v=" + id : ""; }
+
+    function renderSchools() {
+      const list = document.getElementById("school-list");
+      const adminList = document.getElementById("admin-school-list");
+      const data = sortItems(state.schools);
+      if (list) list.innerHTML = visibleItems(data).map(s => `
+        <div class="school"><img class="flag-img" src="${escapeHTML(s.flag)}" alt="${escapeHTML(s.country)} flag" loading="lazy" />
+        <div><div class="country">${escapeHTML(s.country)}</div><div class="school-name">${escapeHTML(s.name)}</div></div></div>`).join("");
+      if (adminList) adminList.innerHTML = data.map((s, i) => `
+        <div class="admin-item"><div class="admin-item-title">${escapeHTML(s.country)} / ${escapeHTML(s.name)}</div>
+        <div class="admin-item-meta">${escapeHTML(s.flag)}</div>
+        <div class="button-row"><button class="secondary-button" onclick="editSchool('${escapeHTML(s.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('Schools','${escapeHTML(s.id)}')">Delete</button></div></div>`).join("");
+    }
+
+    function renderAbstracts() {
+      const list = document.getElementById("abstract-list");
+      const adminList = document.getElementById("admin-abstract-list");
+      const data = sortItems(state.abstracts);
+      if (list) list.innerHTML = visibleItems(data).map(a => `
+        <div class="abstract-item"><button class="abstract-head" onclick="toggleAbstract(this)">
+        <span><span class="abstract-code">${escapeHTML(a.code)}</span><span class="abstract-title">${escapeHTML(a.title)}</span><span class="abstract-school">${escapeHTML(a.school)}</span></span><span class="abstract-plus">+</span></button>
+        <div class="abstract-body"><strong>Abstract:</strong><br />${escapeHTML(a.body)}</div></div>`).join("");
+      if (adminList) adminList.innerHTML = data.map(a => `
+        <div class="admin-item"><div class="admin-item-title">${escapeHTML(a.code)} ${escapeHTML(a.title)}</div><div class="admin-item-meta">${escapeHTML(a.school)}</div>
+        <div class="button-row"><button class="secondary-button" onclick="editAbstract('${escapeHTML(a.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('Abstracts','${escapeHTML(a.id)}')">Delete</button></div></div>`).join("");
+    }
+
+    function renderVideos() {
+      const list = document.getElementById("video-list");
+      const adminList = document.getElementById("admin-video-list");
+      const data = sortItems(state.videos);
+      if (list) list.innerHTML = visibleItems(data).map((v, i) => {
+        const embed = youtubeEmbed(v.url); const watch = youtubeWatch(v.url);
+        const frame = embed ? `<iframe src="${escapeHTML(embed)}" title="${escapeHTML(v.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>` : `<div style="color:#fff;padding:18px;">Invalid YouTube URL</div>`;
+        return `<article class="video-card"><div class="video-frame">${frame}</div><div class="video-info"><h3>${escapeHTML(v.title || "Research Video " + (i + 1))}</h3><p>${escapeHTML(v.school)}<br />${escapeHTML(v.description)}</p>${watch ? `<div class="video-links"><a class="video-link" href="${escapeHTML(watch)}" target="_blank" rel="noopener">Watch on YouTube</a></div>` : ""}</div></article>`;
+      }).join("");
+      if (adminList) adminList.innerHTML = data.map(v => `
+        <div class="admin-item"><div class="admin-item-title">${escapeHTML(v.title)}</div><div class="admin-item-meta">${escapeHTML(v.school)}<br>${escapeHTML(v.url)}</div>
+        <div class="button-row"><button class="secondary-button" onclick="editVideo('${escapeHTML(v.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('Videos','${escapeHTML(v.id)}')">Delete</button></div></div>`).join("");
+    }
+
+    function renderApplications() {
+      const list = document.getElementById("application-list");
+      const adminList = document.getElementById("admin-application-list");
+      const data = sortItems(state.applications);
+      if (list) list.innerHTML = visibleItems(data).map(app => {
+        const enabled = !!app.url && app.enabled !== false;
+        const href = enabled ? escapeHTML(app.url) : "#application";
+        const onclick = enabled ? "" : "onclick=\"alert('URL will be added later.'); return false;\"";
+        return `<a class="application-link-card ${enabled ? "" : "disabled"}" href="${href}" ${onclick} target="_blank" rel="noopener"><strong>${escapeHTML(app.title)}</strong><span class="application-desc">${escapeHTML(app.description)}</span>${app.description_jp ? `<span class="application-desc jp-desc">${escapeHTML(app.description_jp)}</span>` : ""}<span class="button">${escapeHTML(app.button || (enabled ? "Open form" : "URL pending"))}</span></a>`;
+      }).join("");
+      if (adminList) adminList.innerHTML = data.map(app => `
+        <div class="admin-item"><div class="admin-item-title">${escapeHTML(app.title)}</div><div class="admin-item-meta">${escapeHTML(app.url || "URL pending")}</div>
+        <div class="button-row"><button class="secondary-button" onclick="editApplication('${escapeHTML(app.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('Applications','${escapeHTML(app.id)}')">Delete</button></div></div>`).join("");
+    }
+
+    function renderGallery() {
+      const list = document.getElementById("gallery-list");
+      const adminList = document.getElementById("admin-gallery-list");
+      const data = sortItems(state.gallery);
+      if (list) list.innerHTML = visibleItems(data).map(g => `<img src="${escapeHTML(g.src)}" alt="${escapeHTML(g.alt || "SKYSEF photo")}" loading="lazy" />`).join("");
+      if (adminList) adminList.innerHTML = data.map(g => `
+        <div class="admin-item"><div class="admin-item-title">${escapeHTML(g.alt || "Gallery photo")}</div><div class="admin-item-meta">${escapeHTML(g.src)}</div>
+        <div class="button-row"><button class="secondary-button" onclick="editGalleryPhoto('${escapeHTML(g.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('Gallery','${escapeHTML(g.id)}')">Delete</button></div></div>`).join("");
+    }
+
+    function showAdminPage() { document.body.classList.add("admin-mode"); window.scrollTo({ top: 0, behavior: "smooth" }); history.replaceState(null, "", "#admin"); renderAll(); }
+    function showMainPage() { document.body.classList.remove("admin-mode"); history.replaceState(null, "", "#top"); setTimeout(() => document.getElementById("top").scrollIntoView({ behavior: "smooth" }), 0); }
+    window.addEventListener("load", () => { if (location.hash === "#admin") document.body.classList.add("admin-mode"); loadData(); });
+    function showTimelineDay(event, panelId) { document.querySelectorAll(".timeline-tab").forEach(tab => tab.classList.remove("active")); document.querySelectorAll(".timeline-panel").forEach(panel => panel.classList.remove("active")); event.currentTarget.classList.add("active"); document.getElementById(panelId).classList.add("active"); }
+    function unlockMembers() { const input = document.getElementById("member-password"); const error = document.getElementById("member-error"); if (input.value === ACCESS_PASSWORD) { document.getElementById("member-lock").style.display = "none"; document.getElementById("members-content").classList.add("unlocked"); error.textContent = ""; } else error.textContent = "Invalid password. Please try again."; }
+    function showPanel(event, panelId) { document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active")); document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active")); event.currentTarget.classList.add("active"); document.getElementById(panelId).classList.add("active"); }
+    function toggleAbstract(button) { button.closest(".abstract-item").classList.toggle("open"); }
+    function toggleAdminPassword() { const input = document.getElementById("admin-password"); const button = document.getElementById("show-admin-password"); input.type = input.type === "password" ? "text" : "password"; button.textContent = input.type === "password" ? "表示" : "非表示"; }
+    function unlockAdmin() { const input = document.getElementById("admin-password"); const error = document.getElementById("admin-error"); if (input.value === ACCESS_PASSWORD) { document.getElementById("admin-panel").classList.add("open"); error.textContent = ""; renderAll(); } else error.textContent = "Invalid password. Please try again."; }
+
+    async function saveRecord(sheetName, item, statusId) {
+      const ok = await postToGas({ action:"save", sheet: sheetName, item });
+      if (ok) {
+        document.getElementById(statusId).textContent = "Saved. Reloading data...";
+        await new Promise(r => setTimeout(r, 1200));
+        await loadData();
+        document.getElementById(statusId).textContent = "Saved.";
+        setTimeout(() => { const el = document.getElementById(statusId); if (el) el.textContent = ""; }, 1800);
+      }
+    }
+    async function deleteItem(sheetName, id) {
+      if (!confirm("Delete this item?")) return;
+      const ok = await postToGas({ action:"delete", sheet: sheetName, id });
+      if (ok) { await new Promise(r => setTimeout(r, 1200)); await loadData(); }
+    }
+
+    function orderFor(collection) { return (state[collection]?.length || 0) + 1; }
+    function findById(collection, id) { return (state[collection] || []).find(x => x.id === id) || {}; }
+
+    function saveAbstract() {
+      const id = document.getElementById("abstract-edit-index").value || newId("abstract");
+      const item = { id, order: findById("abstracts", id).order || orderFor("abstracts"), code: document.getElementById("abstract-code").value.trim() || "No code", title: document.getElementById("abstract-title-input").value.trim(), school: document.getElementById("abstract-school-input").value.trim(), body: document.getElementById("abstract-body-input").value.trim(), visible:true };
+      if (!item.title) { alert("Title is required."); return; }
+      saveRecord("Abstracts", item, "abstract-status"); clearAbstractForm();
+    }
+    function editAbstract(id) { const a = findById("abstracts", id); document.getElementById("abstract-edit-index").value = a.id || ""; document.getElementById("abstract-code").value = a.code || ""; document.getElementById("abstract-title-input").value = a.title || ""; document.getElementById("abstract-school-input").value = a.school || ""; document.getElementById("abstract-body-input").value = a.body || ""; }
+    function clearAbstractForm() { ["abstract-edit-index","abstract-code","abstract-title-input","abstract-school-input","abstract-body-input"].forEach(id => document.getElementById(id).value = ""); }
+
+    function saveVideo() {
+      const rawUrl = document.getElementById("video-url-input").value.trim();
+      if (!youtubeEmbed(rawUrl)) { alert("YouTube URLを確認してください。例：https://youtu.be/NtJnix-9niI?si=CfqT5C79DED1bQzy"); return; }
+      const id = document.getElementById("video-edit-index").value || newId("video");
+      const item = { id, order: findById("videos", id).order || orderFor("videos"), title: document.getElementById("video-title-input").value.trim() || "Research Video", school: document.getElementById("video-school-input").value.trim(), url: rawUrl, description: document.getElementById("video-desc-input").value.trim(), visible:true };
+      saveRecord("Videos", item, "video-status"); clearVideoForm();
+    }
+    function testVideoUrl() { const rawUrl = document.getElementById("video-url-input").value.trim(); const embedUrl = youtubeEmbed(rawUrl); document.getElementById("video-status").textContent = embedUrl ? `OK: ${embedUrl}` : "Invalid YouTube URL."; }
+    function editVideo(id) { const v = findById("videos", id); document.getElementById("video-edit-index").value = v.id || ""; document.getElementById("video-title-input").value = v.title || ""; document.getElementById("video-school-input").value = v.school || ""; document.getElementById("video-url-input").value = v.url || ""; document.getElementById("video-desc-input").value = v.description || ""; }
+    function clearVideoForm() { ["video-edit-index","video-title-input","video-school-input","video-url-input","video-desc-input"].forEach(id => document.getElementById(id).value = ""); }
+
+    function fillFlag(code) { document.getElementById("school-flag-input").value = FLAGS[code] || ""; const countryMap = { JP:"Japan", TH:"Thailand", TW:"Taiwan", ID:"Indonesia", AU:"Australia", MO:"Macau", GU:"Guam" }; if (!document.getElementById("school-country-input").value.trim()) document.getElementById("school-country-input").value = countryMap[code] || ""; }
+    function saveSchool() {
+      const id = document.getElementById("school-edit-index").value || newId("school");
+      const item = { id, order: findById("schools", id).order || orderFor("schools"), country: document.getElementById("school-country-input").value.trim(), name: document.getElementById("school-name-input").value.trim(), flag: document.getElementById("school-flag-input").value.trim() || FLAGS.JP, visible:true };
+      if (!item.country || !item.name) { alert("Country and School Name are required."); return; }
+      saveRecord("Schools", item, "school-status"); clearSchoolForm();
+    }
+    function editSchool(id) { const s = findById("schools", id); document.getElementById("school-edit-index").value = s.id || ""; document.getElementById("school-country-input").value = s.country || ""; document.getElementById("school-name-input").value = s.name || ""; document.getElementById("school-flag-input").value = s.flag || ""; }
+    function clearSchoolForm() { ["school-edit-index","school-country-input","school-name-input","school-flag-input"].forEach(id => document.getElementById(id).value = ""); }
+
+    function saveApplication() {
+      const id = document.getElementById("application-edit-id").value || newId("app");
+      const item = { id, order: findById("applications", id).order || orderFor("applications"), title: document.getElementById("application-title-input").value.trim(), description: document.getElementById("application-desc-input").value.trim(), description_jp: document.getElementById("application-desc-jp-input").value.trim(), url: document.getElementById("application-url-input").value.trim(), button: document.getElementById("application-button-input").value.trim() || "Open form", enabled: !!document.getElementById("application-url-input").value.trim() };
+      if (!item.title) { alert("Title is required."); return; }
+      saveRecord("Applications", item, "application-status"); clearApplicationForm();
+    }
+    function editApplication(id) { const a = findById("applications", id); document.getElementById("application-edit-id").value = a.id || ""; document.getElementById("application-title-input").value = a.title || ""; document.getElementById("application-desc-input").value = a.description || ""; document.getElementById("application-desc-jp-input").value = a.description_jp || ""; document.getElementById("application-url-input").value = a.url || ""; document.getElementById("application-button-input").value = a.button || ""; }
+    function clearApplicationForm() { ["application-edit-id","application-title-input","application-desc-input","application-desc-jp-input","application-url-input","application-button-input"].forEach(id => document.getElementById(id).value = ""); }
+
+    function saveGalleryPhoto() {
+      const id = document.getElementById("gallery-edit-id").value || newId("gallery");
+      const item = { id, order: findById("gallery", id).order || orderFor("gallery"), src: document.getElementById("gallery-src-input").value.trim(), alt: document.getElementById("gallery-alt-input").value.trim(), visible:true };
+      if (!item.src) { alert("Image URL is required."); return; }
+      saveRecord("Gallery", item, "gallery-status"); clearGalleryForm();
+    }
+    function editGalleryPhoto(id) { const g = findById("gallery", id); document.getElementById("gallery-edit-id").value = g.id || ""; document.getElementById("gallery-src-input").value = g.src || ""; document.getElementById("gallery-alt-input").value = g.alt || ""; }
+    function clearGalleryForm() { ["gallery-edit-id","gallery-src-input","gallery-alt-input"].forEach(id => document.getElementById(id).value = ""); }
+  </script>
+</body>
+</html>
