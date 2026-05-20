@@ -628,8 +628,9 @@
   </section>
 
   <script>
+    const ACCESS_PASSWORD_ADMIN = "set";
     const ACCESS_PASSWORD = "skysef";
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwPGr_rEp3Irnqg6749z94B8KxRBwy80Z2gdR53d7kwe9mqS9WAKabMiNWV2QTC8cQv/exec"; // デプロイ後のGAS Web App URLを入れてください。
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx6XOK1Uuljwx0MeN7ZtxMiiy5tAQa7BiILKfBZU4VcHJoiMDJqR62uvB6YvMkSRSc/exec"; // デプロイ後のGAS Web App URLを入れてください。
 
     const FLAGS = {
       ID: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1280px-Flag_of_Indonesia.svg.png",
@@ -728,7 +729,7 @@
         alert("GAS_WEB_APP_URL が未設定です。Apps Scriptをデプロイし、URLをindex.htmlに貼り付けてください。");
         return false;
       }
-      payload.adminPassword = ACCESS_PASSWORD;
+      payload.adminPassword = ACCESS_PASSWORD_ADMIN;
       try {
         await fetch(GAS_WEB_APP_URL, {
           method: "POST",
