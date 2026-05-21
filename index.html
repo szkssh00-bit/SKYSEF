@@ -624,9 +624,10 @@
   </section>
 
   <script>
+    const VIEW_PASSWORD = "skysef";
     let viewAuthToken = "";
     let adminAuthToken = "";
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwZvH1p8l72uEMsoJ33HBaGOLhPUJ9Rd7nroZOXffEcfG6z1JDohSaFsHkcyBV8Da9C/exec"; // デプロイ後のGAS Web App URLを入れてください。
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwPGr_rEp3Irnqg6749z94B8KxRBwy80Z2gdR53d7kwe9mqS9WAKabMiNWV2QTC8cQv/exec"; // デプロイ後のGAS Web App URLを入れてください。
 
     const FLAGS = {
       ID: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1280px-Flag_of_Indonesia.svg.png",
@@ -742,16 +743,16 @@
       }
     }
 
-    async function verifyPassword(role, password) {
+    async function verifyAdminPassword(password) {
       if (!isGasConfigured()) {
         alert("GAS_WEB_APP_URL が未設定です。Apps Scriptをデプロイし、URLをindex.htmlに貼り付けてください。");
         return { ok:false, error:"GAS_WEB_APP_URL is not configured." };
       }
       try {
-        return await jsonp({ action:"verifyPassword", role, password });
+        return await jsonp({ action:"verifyPassword", role:"admin", password });
       } catch (e) {
         console.error(e);
-        return { ok:false, error:"Could not verify password." };
+        return { ok:false, error:"Could not verify admin password." };
       }
     }
 
@@ -873,10 +874,8 @@
     async function unlockMembers() {
       const input = document.getElementById("member-password");
       const error = document.getElementById("member-error");
-      error.textContent = "Checking...";
-      const result = await verifyPassword("view", input.value);
-      if (result && result.ok && result.token) {
-        viewAuthToken = result.token;
+      if (input.value === VIEW_PASSWORD) {
+        viewAuthToken = "view-ok";
         document.getElementById("member-lock").style.display = "none";
         document.getElementById("members-content").classList.add("unlocked");
         error.textContent = "";
@@ -892,7 +891,7 @@
       const input = document.getElementById("admin-password");
       const error = document.getElementById("admin-error");
       error.textContent = "Checking...";
-      const result = await verifyPassword("admin", input.value);
+      const result = await verifyAdminPassword(input.value);
       if (result && result.ok && result.token) {
         adminAuthToken = result.token;
         document.getElementById("admin-panel").classList.add("open");
