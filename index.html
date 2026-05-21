@@ -357,7 +357,6 @@
         <div class="container">
           <div class="eyebrow">Timeline</div>
           <h2 class="section-title">SKYSEF 2026 Timeline / Venue</h2>
-          <p class="lead">SKYSEF will hold at <a href="https://www.granship.or.jp/">GRANSHIP (2-3-1 Higashi-Shizuoka, Suruga-ku, Shizuoka City, 422-8019, Japan)</a>a</p>         
           <p class="lead">Choose a date to view the schedule for each day.</p>
           <p class="timeline-note">Draft schedule. Final information should be confirmed before publication.</p>
 
@@ -484,7 +483,7 @@
             <div id="application-list" class="application-grid">
               <a class="application-link-card" href="https://forms.gle/KFqLg73bZwzLNQ3c9" target="_blank" rel="noopener">
                 <strong>Form 2</strong>
-                <span>Application form for schools in Japan by 5/28.　申し込みはこちら　二次締め切り5/28</span>
+                <span>Application form for schools in Japan.</span>
                 <span class="button">Open form</span>
               </a>
               <a class="application-link-card" href="https://forms.gle/WbYSLvai7qazd3rR9" target="_blank" rel="noopener">
@@ -525,8 +524,6 @@
       <div class="container">
         <div class="eyebrow">Admin</div>
         <h2 class="section-title">Content Management</h2>
-        <p class="lead">Use this page to add, edit, or delete schools, abstracts, YouTube research introduction videos, application forms, and gallery photos. Data is saved to Google Spreadsheet through Google Apps Script.</p>
-
         <div id="admin-lock" class="admin-lock-row">
           <div class="field" style="margin-top:0;">
             <label for="admin-password">Admin Password</label>
@@ -536,8 +533,6 @@
           <button class="primary-button" onclick="unlockAdmin()">Open Admin</button>
         </div>
         <div id="admin-error" class="error-message"></div>
-        <p class="small-note">Viewing password is <code>VIEW_PASSWORD</code>. Admin password is <code>ADMIN_PASSWORD</code>. Static HTML password control is not server-side security.</p>
-
         <div id="admin-panel" class="admin-panel">
           <div class="admin-grid">
             <div class="admin-card">
@@ -629,9 +624,9 @@
   </section>
 
   <script>
-    const VIEW_PASSWORD = "skysef";      // Abstract / Video viewing password
-    const ADMIN_PASSWORD = "set";       // Admin page password and GAS write password
-    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyWxFL6oGTw7Bs88RDgkNm6FUQCu1uOKLn9TiVZpIZukHoC5Lal4KrUOPq1aRP1Hbuy/exec"; // デプロイ後のGAS Web App URLを入れてください。
+    let viewAuthToken = "";
+    let adminAuthToken = "";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwZvH1p8l72uEMsoJ33HBaGOLhPUJ9Rd7nroZOXffEcfG6z1JDohSaFsHkcyBV8Da9C/exec"; // デプロイ後のGAS Web App URLを入れてください。
 
     const FLAGS = {
       ID: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1280px-Flag_of_Indonesia.svg.png",
@@ -731,7 +726,7 @@
         alert("GAS_WEB_APP_URL が未設定です。Apps Scriptをデプロイし、URLをindex.htmlに貼り付けてください。");
         return false;
       }
-      payload.adminPassword = ADMIN_PASSWORD;
+      payload.adminToken = adminAuthToken;
       try {
         await fetch(GAS_WEB_APP_URL, {
           method: "POST",
@@ -747,22 +742,35 @@
       }
     }
 
-    async function loadData() {
+    async function verifyPassword(role, password) {
+      if (!isGasConfigured()) {
+        alert("GAS_WEB_APP_URL が未設定です。Apps Scriptをデプロイし、URLをindex.htmlに貼り付けてください。");
+        return { ok:false, error:"GAS_WEB_APP_URL is not configured." };
+      }
+      try {
+        return await jsonp({ action:"verifyPassword", role, password });
+      } catch (e) {
+        console.error(e);
+        return { ok:false, error:"Could not verify password." };
+      }
+    }
+
+    async function loadData(token = "") {
       if (!isGasConfigured()) {
         console.warn("GAS_WEB_APP_URL is not configured. Default data is used.");
         renderAll();
         return;
       }
       try {
-        const data = await jsonp({ action: "listAll" });
+        const params = { action: "listAll" };
+        if (token) params.token = token;
+        const data = await jsonp(params);
         if (data && data.ok) {
-          state = {
-            schools: data.schools?.length ? data.schools : DEFAULT_DATA.schools,
-            abstracts: data.abstracts?.length ? data.abstracts : DEFAULT_DATA.abstracts,
-            videos: data.videos?.length ? data.videos : DEFAULT_DATA.videos,
-            applications: data.applications?.length ? data.applications : DEFAULT_DATA.applications,
-            gallery: data.gallery?.length ? data.gallery : DEFAULT_DATA.gallery
-          };
+          state.schools = data.schools?.length ? data.schools : DEFAULT_DATA.schools;
+          state.applications = data.applications?.length ? data.applications : DEFAULT_DATA.applications;
+          state.gallery = data.gallery?.length ? data.gallery : DEFAULT_DATA.gallery;
+          if (Array.isArray(data.abstracts)) state.abstracts = data.abstracts;
+          if (Array.isArray(data.videos)) state.videos = data.videos;
         }
       } catch (e) {
         console.warn("GAS read failed. Default data is used.", e);
@@ -862,18 +870,45 @@
     function showMainPage() { document.body.classList.remove("admin-mode"); history.replaceState(null, "", "#top"); setTimeout(() => document.getElementById("top").scrollIntoView({ behavior: "smooth" }), 0); }
     window.addEventListener("load", () => { if (location.hash === "#admin") document.body.classList.add("admin-mode"); loadData(); });
     function showTimelineDay(event, panelId) { document.querySelectorAll(".timeline-tab").forEach(tab => tab.classList.remove("active")); document.querySelectorAll(".timeline-panel").forEach(panel => panel.classList.remove("active")); event.currentTarget.classList.add("active"); document.getElementById(panelId).classList.add("active"); }
-    function unlockMembers() { const input = document.getElementById("member-password"); const error = document.getElementById("member-error"); if (input.value === VIEW_PASSWORD) { document.getElementById("member-lock").style.display = "none"; document.getElementById("members-content").classList.add("unlocked"); error.textContent = ""; } else error.textContent = "Invalid password. Please try again."; }
+    async function unlockMembers() {
+      const input = document.getElementById("member-password");
+      const error = document.getElementById("member-error");
+      error.textContent = "Checking...";
+      const result = await verifyPassword("view", input.value);
+      if (result && result.ok && result.token) {
+        viewAuthToken = result.token;
+        document.getElementById("member-lock").style.display = "none";
+        document.getElementById("members-content").classList.add("unlocked");
+        error.textContent = "";
+        await loadData(viewAuthToken);
+      } else {
+        error.textContent = "Invalid password. Please try again.";
+      }
+    }
     function showPanel(event, panelId) { document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active")); document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active")); event.currentTarget.classList.add("active"); document.getElementById(panelId).classList.add("active"); }
     function toggleAbstract(button) { button.closest(".abstract-item").classList.toggle("open"); }
     function toggleAdminPassword() { const input = document.getElementById("admin-password"); const button = document.getElementById("show-admin-password"); input.type = input.type === "password" ? "text" : "password"; button.textContent = input.type === "password" ? "表示" : "非表示"; }
-    function unlockAdmin() { const input = document.getElementById("admin-password"); const error = document.getElementById("admin-error"); if (input.value === ADMIN_PASSWORD) { document.getElementById("admin-panel").classList.add("open"); error.textContent = ""; renderAll(); } else error.textContent = "Invalid password. Please try again."; }
+    async function unlockAdmin() {
+      const input = document.getElementById("admin-password");
+      const error = document.getElementById("admin-error");
+      error.textContent = "Checking...";
+      const result = await verifyPassword("admin", input.value);
+      if (result && result.ok && result.token) {
+        adminAuthToken = result.token;
+        document.getElementById("admin-panel").classList.add("open");
+        error.textContent = "";
+        await loadData(adminAuthToken);
+      } else {
+        error.textContent = "Invalid password. Please try again.";
+      }
+    }
 
     async function saveRecord(sheetName, item, statusId) {
       const ok = await postToGas({ action:"save", sheet: sheetName, item });
       if (ok) {
         document.getElementById(statusId).textContent = "Saved. Reloading data...";
         await new Promise(r => setTimeout(r, 2000));
-        await loadData();
+        await loadData(adminAuthToken);
         document.getElementById(statusId).textContent = "Saved.";
         setTimeout(() => { const el = document.getElementById(statusId); if (el) el.textContent = ""; }, 1800);
       }
@@ -881,7 +916,7 @@
     async function deleteItem(sheetName, id) {
       if (!confirm("Delete this item?")) return;
       const ok = await postToGas({ action:"delete", sheet: sheetName, id });
-      if (ok) { await new Promise(r => setTimeout(r, 2000)); await loadData(); }
+      if (ok) { await new Promise(r => setTimeout(r, 2000)); await loadData(adminAuthToken); }
     }
 
     function orderFor(collection) { return (state[collection]?.length || 0) + 1; }
