@@ -484,14 +484,20 @@
 
           <div id="members-content" class="members-content">
             <div class="tabs">
-              <button class="tab active" onclick="showPanel(event, 'abstract-panel')">Abstracts</button>
+              <button class="tab active" onclick="showPanel(event, 'poseter-abstract-panel')">Poster Abstracts</button>
+              <button class="tab active" onclick="showPanel(event, 'oral-abstract-panel')">Oral Abstracts</button>
               <button class="tab" onclick="showPanel(event, 'video-panel')">Video Introduction of Research</button>
             </div>
-            <div id="abstract-panel" class="panel active">
+            <div id="poster-abstract-panel" class="panel active">
               <div class="subsection-card">
-                <h3>Research Abstracts</h3>
-                <p class="timeline-note">Abstracts added from the Admin page are shown here.</p>
-                <div id="abstract-list" class="abstract-list"></div>
+                <h3>Poster Abstracts</h3>
+                <div id="poster-abstract-list" class="abstract-list"></div>
+              </div>
+            </div>
+            <div id="oral-abstract-panel" class="panel active">
+              <div class="subsection-card">
+                <h3>Oral Abstracts</h3>
+                <div id="oral-abstract-list" class="abstract-list"></div>
               </div>
             </div>
             <div id="video-panel" class="panel">
@@ -807,7 +813,7 @@
       renderAll();
     }
 
-    function renderAll() { renderSchools(); renderAbstracts(); renderVideos(); renderApplications(); renderGallery(); }
+    function renderAll() { renderSchools(); renderoralAbstracts(); renderposterAbstracts(); renderVideos(); renderApplications(); renderGallery(); }
 
     function youtubeVideoId(url) {
       let value = String(url || "").trim().replace(/&amp;/g, "&");
@@ -842,9 +848,21 @@
         <div class="admin-item-meta">${escapeHTML(s.flag)}</div>
         <div class="button-row"><button class="secondary-button" onclick="editSchool('${escapeHTML(s.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('Schools','${escapeHTML(s.id)}')">Delete</button></div></div>`).join("");
     }
-
-    function renderAbstracts() {
-      const list = document.getElementById("abstract-list");
+    
+    function posterrenderAbstracts() {
+      const list = document.getElementById("poster-abstract-list");
+      const adminList = document.getElementById("admin-abstract-list");
+      const data = sortItems(state.abstracts);
+      if (list) list.innerHTML = visibleItems(data).map(a => `
+        <div class="abstract-item"><button class="abstract-head" onclick="toggleAbstract(this)">
+        <span><span class="abstract-code">${escapeHTML(a.code)}</span><span class="abstract-title">${escapeHTML(a.title)}</span><span class="abstract-school">${escapeHTML(a.school)}</span></span><span class="abstract-plus">+</span></button>
+        <div class="abstract-body"><strong>Abstract:</strong><br />${escapeHTML(a.body)}</div></div>`).join("");
+      if (adminList) adminList.innerHTML = data.map(a => `
+        <div class="admin-item"><div class="admin-item-title">${escapeHTML(a.code)} ${escapeHTML(a.title)}</div><div class="admin-item-meta">${escapeHTML(a.school)}</div>
+        <div class="button-row"><button class="secondary-button" onclick="editAbstract('${escapeHTML(a.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('Abstracts','${escapeHTML(a.id)}')">Delete</button></div></div>`).join("");
+    }
+    function oralrenderAbstracts() {
+      const list = document.getElementById("oral-abstract-list");
       const adminList = document.getElementById("admin-abstract-list");
       const data = sortItems(state.abstracts);
       if (list) list.innerHTML = visibleItems(data).map(a => `
