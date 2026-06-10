@@ -484,11 +484,11 @@
 
           <div id="members-content" class="members-content">
             <div class="tabs">
-              <button class="tab active" onclick="showPanel(event, 'poseter-abstract-panel')">Poster Abstracts</button>
               <button class="tab active" onclick="showPanel(event, 'oral-abstract-panel')">Oral Abstracts</button>
+              <button class="tab" onclick="showPanel(event, 'poster-abstract-panel')">Poster Abstracts</button>
               <button class="tab" onclick="showPanel(event, 'video-panel')">Video Introduction of Research</button>
             </div>
-            <div id="poster-abstract-panel" class="panel active">
+            <div id="poster-abstract-panel" class="panel">
               <div class="subsection-card">
                 <h3>Poster Abstracts</h3>
                 <div id="poster-abstract-list" class="abstract-list"></div>
@@ -572,6 +572,14 @@
             <div class="admin-card">
               <h3>Manage Abstracts</h3>
               <input type="hidden" id="abstract-edit-index" value="" />
+              <input type="hidden" id="abstract-edit-type" value="" />
+              <div class="field">
+                <label for="abstract-type-input">Presentation Type</label>
+                <select id="abstract-type-input">
+                  <option value="OralAbstracts">Oral Abstracts</option>
+                  <option value="PosterAbstracts">Poster Abstracts</option>
+                </select>
+              </div>
               <div class="field"><label for="abstract-code">Code</label><input id="abstract-code" placeholder="O-01 / P-01" /></div>
               <div class="field"><label for="abstract-title-input">Title</label><input id="abstract-title-input" placeholder="Research title" /></div>
               <div class="field"><label for="abstract-school-input">School / Country</label><input id="abstract-school-input" placeholder="School Name / Country" /></div>
@@ -581,7 +589,10 @@
                 <button class="secondary-button" onclick="clearAbstractForm()">Clear</button>
               </div>
               <div id="abstract-status" class="success-message"></div>
-              <div id="admin-abstract-list" class="admin-list"></div>
+              <h4 style="margin-top:18px;color:var(--navy);">Oral Abstracts</h4>
+              <div id="admin-oral-abstract-list" class="admin-list"></div>
+              <h4 style="margin-top:18px;color:var(--navy);">Poster Abstracts</h4>
+              <div id="admin-poster-abstract-list" class="admin-list"></div>
             </div>
 
             <div class="admin-card">
@@ -695,9 +706,11 @@
         { id:"school-018", order:18, country:"Japan", name:"Takada Junior & Senior High School", flag:FLAGS.JP, visible:true },
         { id:"school-019", order:19, country:"Japan", name:"Shizuoka Agriculture High School", flag:FLAGS.JP, visible:true }
       ],
-      abstracts: [
-        { id:"abstract-001", order:1, code:"O-01", title:"Research Title Here", school:"School Name / Country", body:"Paste the student research abstract here. Include purpose, method, results, and conclusion in concise form.", visible:true },
-        { id:"abstract-002", order:2, code:"P-01", title:"Poster Presentation Title Here", school:"School Name / Country", body:"Paste the poster abstract here. Use this area for keywords, research questions, or short summaries if necessary.", visible:true }
+      oralAbstracts: [
+        { id:"oral-abstract-001", order:1, code:"O-01", title:"Research Title Here", school:"School Name / Country", body:"Paste the student research abstract here. Include purpose, method, results, and conclusion in concise form.", visible:true }
+      ],
+      posterAbstracts: [
+        { id:"poster-abstract-001", order:1, code:"P-01", title:"Poster Presentation Title Here", school:"School Name / Country", body:"Paste the poster abstract here. Use this area for keywords, research questions, or short summaries if necessary.", visible:true }
       ],
       videos: [
         { id:"video-001", order:1, title:"Sample: Research Introduction", school:"School Name / Country", url:"https://youtu.be/NtJnix-9niI?si=CfqT5C79DED1bQzy", description:"Sample video URL format.", visible:true }
@@ -733,6 +746,15 @@
     function isGasConfigured() { return GAS_WEB_APP_URL && !GAS_WEB_APP_URL.includes("PASTE_YOUR_GAS_WEB_APP_URL_HERE"); }
     function sortItems(arr) { return [...(arr || [])].sort((a,b) => Number(a.order || 9999) - Number(b.order || 9999)); }
     function visibleItems(arr) { return sortItems(arr).filter(x => x.visible !== false && x.enabled !== false); }
+    function splitLegacyAbstracts(abstracts) {
+      const result = { oralAbstracts: [], posterAbstracts: [] };
+      sortItems(abstracts).forEach((item, index) => {
+        const code = String(item.code || "").trim().toUpperCase();
+        const target = code.startsWith("P") ? result.posterAbstracts : result.oralAbstracts;
+        target.push({ ...item, order: target.length + 1, id: item.id || newId(code.startsWith("P") ? "poster-abstract" : "oral-abstract") });
+      });
+      return result;
+    }
 
     function jsonp(params = {}) {
       if (!isGasConfigured()) return Promise.reject(new Error("GAS_WEB_APP_URL is not configured."));
@@ -804,7 +826,13 @@
           state.schools = data.schools?.length ? data.schools : DEFAULT_DATA.schools;
           state.applications = data.applications?.length ? data.applications : DEFAULT_DATA.applications;
           state.gallery = data.gallery?.length ? data.gallery : DEFAULT_DATA.gallery;
-          if (Array.isArray(data.abstracts)) state.abstracts = data.abstracts;
+          if (Array.isArray(data.oralAbstracts)) state.oralAbstracts = data.oralAbstracts;
+          if (Array.isArray(data.posterAbstracts)) state.posterAbstracts = data.posterAbstracts;
+          if ((!Array.isArray(data.oralAbstracts) || !Array.isArray(data.posterAbstracts)) && Array.isArray(data.abstracts)) {
+            const split = splitLegacyAbstracts(data.abstracts);
+            if (!Array.isArray(data.oralAbstracts)) state.oralAbstracts = split.oralAbstracts;
+            if (!Array.isArray(data.posterAbstracts)) state.posterAbstracts = split.posterAbstracts;
+          }
           if (Array.isArray(data.videos)) state.videos = data.videos;
         }
       } catch (e) {
@@ -813,7 +841,7 @@
       renderAll();
     }
 
-    function renderAll() { renderSchools(); renderoralAbstracts(); renderposterAbstracts(); renderVideos(); renderApplications(); renderGallery(); }
+    function renderAll() { renderSchools(); renderOralAbstracts(); renderPosterAbstracts(); renderVideos(); renderApplications(); renderGallery(); }
 
     function youtubeVideoId(url) {
       let value = String(url || "").trim().replace(/&amp;/g, "&");
@@ -849,29 +877,30 @@
         <div class="button-row"><button class="secondary-button" onclick="editSchool('${escapeHTML(s.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('Schools','${escapeHTML(s.id)}')">Delete</button></div></div>`).join("");
     }
     
-    function posterrenderAbstracts() {
-      const list = document.getElementById("poster-abstract-list");
-      const adminList = document.getElementById("admin-abstract-list");
-      const data = sortItems(state.abstracts);
-      if (list) list.innerHTML = visibleItems(data).map(a => `
+    function abstractCardHTML(a) {
+      return `
         <div class="abstract-item"><button class="abstract-head" onclick="toggleAbstract(this)">
         <span><span class="abstract-code">${escapeHTML(a.code)}</span><span class="abstract-title">${escapeHTML(a.title)}</span><span class="abstract-school">${escapeHTML(a.school)}</span></span><span class="abstract-plus">+</span></button>
-        <div class="abstract-body"><strong>Abstract:</strong><br />${escapeHTML(a.body)}</div></div>`).join("");
-      if (adminList) adminList.innerHTML = data.map(a => `
-        <div class="admin-item"><div class="admin-item-title">${escapeHTML(a.code)} ${escapeHTML(a.title)}</div><div class="admin-item-meta">${escapeHTML(a.school)}</div>
-        <div class="button-row"><button class="secondary-button" onclick="editAbstract('${escapeHTML(a.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('Abstracts','${escapeHTML(a.id)}')">Delete</button></div></div>`).join("");
+        <div class="abstract-body"><strong>Abstract:</strong><br />${escapeHTML(a.body)}</div></div>`;
     }
-    function oralrenderAbstracts() {
-      const list = document.getElementById("oral-abstract-list");
-      const adminList = document.getElementById("admin-abstract-list");
-      const data = sortItems(state.abstracts);
-      if (list) list.innerHTML = visibleItems(data).map(a => `
-        <div class="abstract-item"><button class="abstract-head" onclick="toggleAbstract(this)">
-        <span><span class="abstract-code">${escapeHTML(a.code)}</span><span class="abstract-title">${escapeHTML(a.title)}</span><span class="abstract-school">${escapeHTML(a.school)}</span></span><span class="abstract-plus">+</span></button>
-        <div class="abstract-body"><strong>Abstract:</strong><br />${escapeHTML(a.body)}</div></div>`).join("");
-      if (adminList) adminList.innerHTML = data.map(a => `
+    function adminAbstractItemHTML(a, sheetName) {
+      return `
         <div class="admin-item"><div class="admin-item-title">${escapeHTML(a.code)} ${escapeHTML(a.title)}</div><div class="admin-item-meta">${escapeHTML(a.school)}</div>
-        <div class="button-row"><button class="secondary-button" onclick="editAbstract('${escapeHTML(a.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('Abstracts','${escapeHTML(a.id)}')">Delete</button></div></div>`).join("");
+        <div class="button-row"><button class="secondary-button" onclick="editAbstract('${escapeHTML(sheetName)}','${escapeHTML(a.id)}')">Edit</button><button class="danger-button" onclick="deleteItem('${escapeHTML(sheetName)}','${escapeHTML(a.id)}')">Delete</button></div></div>`;
+    }
+    function renderOralAbstracts() {
+      const list = document.getElementById("oral-abstract-list");
+      const adminList = document.getElementById("admin-oral-abstract-list");
+      const data = sortItems(state.oralAbstracts);
+      if (list) list.innerHTML = visibleItems(data).map(abstractCardHTML).join("");
+      if (adminList) adminList.innerHTML = data.map(a => adminAbstractItemHTML(a, "OralAbstracts")).join("");
+    }
+    function renderPosterAbstracts() {
+      const list = document.getElementById("poster-abstract-list");
+      const adminList = document.getElementById("admin-poster-abstract-list");
+      const data = sortItems(state.posterAbstracts);
+      if (list) list.innerHTML = visibleItems(data).map(abstractCardHTML).join("");
+      if (adminList) adminList.innerHTML = data.map(a => adminAbstractItemHTML(a, "PosterAbstracts")).join("");
     }
 
     function renderVideos() {
@@ -967,14 +996,31 @@
     function orderFor(collection) { return (state[collection]?.length || 0) + 1; }
     function findById(collection, id) { return (state[collection] || []).find(x => x.id === id) || {}; }
 
+    function abstractCollectionFromSheet(sheetName) { return sheetName === "PosterAbstracts" ? "posterAbstracts" : "oralAbstracts"; }
     function saveAbstract() {
-      const id = document.getElementById("abstract-edit-index").value || newId("abstract");
-      const item = { id, order: findById("abstracts", id).order || orderFor("abstracts"), code: document.getElementById("abstract-code").value.trim() || "No code", title: document.getElementById("abstract-title-input").value.trim(), school: document.getElementById("abstract-school-input").value.trim(), body: document.getElementById("abstract-body-input").value.trim(), visible:true };
+      const sheetName = document.getElementById("abstract-type-input").value || "OralAbstracts";
+      const collection = abstractCollectionFromSheet(sheetName);
+      const previousSheet = document.getElementById("abstract-edit-type").value || sheetName;
+      const id = document.getElementById("abstract-edit-index").value || newId(sheetName === "PosterAbstracts" ? "poster-abstract" : "oral-abstract");
+      const item = { id, order: findById(collection, id).order || orderFor(collection), code: document.getElementById("abstract-code").value.trim() || (sheetName === "PosterAbstracts" ? "P-00" : "O-00"), title: document.getElementById("abstract-title-input").value.trim(), school: document.getElementById("abstract-school-input").value.trim(), body: document.getElementById("abstract-body-input").value.trim(), visible:true };
       if (!item.title) { alert("Title is required."); return; }
-      saveRecord("Abstracts", item, "abstract-status"); clearAbstractForm();
+      if (previousSheet && previousSheet !== sheetName && id) {
+        postToGas({ action:"delete", sheet: previousSheet, id });
+      }
+      saveRecord(sheetName, item, "abstract-status"); clearAbstractForm();
     }
-    function editAbstract(id) { const a = findById("abstracts", id); document.getElementById("abstract-edit-index").value = a.id || ""; document.getElementById("abstract-code").value = a.code || ""; document.getElementById("abstract-title-input").value = a.title || ""; document.getElementById("abstract-school-input").value = a.school || ""; document.getElementById("abstract-body-input").value = a.body || ""; }
-    function clearAbstractForm() { ["abstract-edit-index","abstract-code","abstract-title-input","abstract-school-input","abstract-body-input"].forEach(id => document.getElementById(id).value = ""); }
+    function editAbstract(sheetName, id) {
+      const collection = abstractCollectionFromSheet(sheetName);
+      const a = findById(collection, id);
+      document.getElementById("abstract-edit-index").value = a.id || "";
+      document.getElementById("abstract-edit-type").value = sheetName || "";
+      document.getElementById("abstract-type-input").value = sheetName || "OralAbstracts";
+      document.getElementById("abstract-code").value = a.code || "";
+      document.getElementById("abstract-title-input").value = a.title || "";
+      document.getElementById("abstract-school-input").value = a.school || "";
+      document.getElementById("abstract-body-input").value = a.body || "";
+    }
+    function clearAbstractForm() { ["abstract-edit-index","abstract-edit-type","abstract-code","abstract-title-input","abstract-school-input","abstract-body-input"].forEach(id => document.getElementById(id).value = ""); document.getElementById("abstract-type-input").value = "OralAbstracts"; }
 
     function saveVideo() {
       const rawUrl = document.getElementById("video-url-input").value.trim();
