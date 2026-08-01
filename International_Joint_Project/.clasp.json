@@ -12,8 +12,7 @@
     ".json"
   ],
   "filePushOrder": [
-    "Code.gs",
-    "GAS_Index.html"
+    "Code.gs"
   ],
   "skipSubdirectories": true
 }

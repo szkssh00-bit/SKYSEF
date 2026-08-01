@@ -1,10 +1,14 @@
 /*******************************************************
  * SKYSEF 2026
- * Future Engineers Design & Build Challenge
- * Integrated GAS backend
+ * International Joint Project JSONP API
+ *
+ * GitHub Pages is the user interface.
+ * This Apps Script project handles data only.
  *******************************************************/
 
-const SPREADSHEET_ID = '18S-0NPN9wRkqkno52NAhtV4lYAbXuL_5_Fn9YkH0Gy8';
+const SPREADSHEET_ID =
+  '18S-0NPN9wRkqkno52NAhtV4lYAbXuL_5_Fn9YkH0Gy8';
+
 const TEAM_COUNT = 35;
 
 const SHEETS = {
@@ -15,18 +19,189 @@ const SHEETS = {
   DECORATION: 'Decoration'
 };
 
-
 function doGet(e) {
-  const template = HtmlService.createTemplateFromFile('GAS_Index');
-  template.initialId = e && e.parameter && e.parameter.id ? String(e.parameter.id) : '';
-  template.initialMode = e && e.parameter && e.parameter.mode ? String(e.parameter.mode) : 'home';
+  try {
+    const params =
+      e && e.parameter
+        ? e.parameter
+        : {};
 
-  return template.evaluate()
-    .setTitle('SKYSEF 2026 | Future Engineers Design & Build Challenge')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    const action =
+      String(
+        params.api ||
+        'status'
+      );
+
+    let result;
+
+    switch (action) {
+      case 'teams':
+        result = {
+          success: true,
+          teams: getTeams()
+        };
+        break;
+
+      case 'results':
+        result =
+          getCompetitionResults();
+        result.success = true;
+        break;
+
+      case 'checkVote':
+        result =
+          checkDecorationVote(
+            params.participantId
+          );
+        result.success = true;
+        break;
+
+      case 'submitVote':
+        result =
+          submitDecorationVote({
+            participantId:
+              params.participantId,
+            teamNo:
+              Number(
+                params.teamNo
+              )
+          });
+        break;
+
+      case 'saveChallenge1':
+        result =
+          saveChallenge1({
+            teamNo:
+              Number(
+                params.teamNo
+              ),
+            time:
+              Number(
+                params.time
+              ),
+            status:
+              String(
+                params.status ||
+                ''
+              )
+          });
+        break;
+
+      case 'saveChallenge2':
+        result =
+          saveChallenge2({
+            teamNo:
+              Number(
+                params.teamNo
+              ),
+            time:
+              Number(
+                params.time
+              ),
+            status:
+              String(
+                params.status ||
+                ''
+              )
+          });
+        break;
+
+      case 'saveChallenge3':
+        result =
+          saveChallenge3({
+            teamNo:
+              Number(
+                params.teamNo
+              ),
+            angle:
+              Number(
+                params.angle
+              )
+          });
+        break;
+
+      case 'status':
+        result = {
+          success: true,
+          service:
+            'SKYSEF IJP API',
+          generatedAt:
+            Date.now()
+        };
+        break;
+
+      default:
+        result = {
+          success: false,
+          message:
+            'Unknown API action.'
+        };
+    }
+
+    return jsonpOutput_(
+      result,
+      params.callback
+    );
+
+  } catch (error) {
+    return jsonpOutput_(
+      {
+        success: false,
+        message:
+          error &&
+          error.message
+            ? error.message
+            : String(error)
+      },
+      e &&
+      e.parameter
+        ? e.parameter.callback
+        : ''
+    );
+  }
 }
 
-/* -------------------- SETUP -------------------- */
+function jsonpOutput_(
+  data,
+  callback
+) {
+  const safeCallback =
+    String(
+      callback || ''
+    )
+      .replace(
+        /[^a-zA-Z0-9_$.]/g,
+        ''
+      );
+
+  const json =
+    JSON.stringify(data);
+
+  if (safeCallback) {
+    return ContentService
+      .createTextOutput(
+        safeCallback +
+        '(' +
+        json +
+        ');'
+      )
+      .setMimeType(
+        ContentService
+          .MimeType
+          .JAVASCRIPT
+      );
+  }
+
+  return ContentService
+    .createTextOutput(
+      json
+    )
+    .setMimeType(
+      ContentService
+        .MimeType
+        .JSON
+    );
+}
 
 function setupCompetitionSheets() {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
