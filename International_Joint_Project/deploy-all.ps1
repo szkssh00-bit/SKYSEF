@@ -12,6 +12,21 @@ if (-not $RepoRoot) {
   throw "This folder is not inside the SKYSEF Git repository."
 }
 
+
+Write-Host "[0/6] Checking browser JavaScript syntax..."
+$HtmlText = Get-Content -LiteralPath (Join-Path $PSScriptRoot "Index.html") -Raw
+$Match = [regex]::Match($HtmlText, "<script>([\s\S]*)</script>")
+if (-not $Match.Success) {
+  throw "The JavaScript block was not found in Index.html."
+}
+$TempJs = Join-Path $env:TEMP ("ijp_check_" + [guid]::NewGuid().ToString() + ".js")
+Set-Content -LiteralPath $TempJs -Value $Match.Groups[1].Value -Encoding UTF8
+try {
+  node --check $TempJs
+} finally {
+  Remove-Item -LiteralPath $TempJs -Force -ErrorAction SilentlyContinue
+}
+
 Write-Host "[1/5] Push GAS API source"
 clasp push --force
 

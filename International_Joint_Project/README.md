@@ -36,3 +36,9 @@ deploy-all.cmd "Update IJP system"
 
 This pushes the GAS API, updates the existing GAS deployment, commits the
 GitHub changes, and pushes the `main` branch.
+
+## Fixed issue
+
+The previous `Index.html` contained a missing `);` at the end of the JSONP
+`Promise` constructor. This caused a JavaScript syntax error before any button
+event could run. The deployment script now runs `node --check` before pushing.
