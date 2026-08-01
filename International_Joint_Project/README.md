@@ -1,25 +1,57 @@
 # SKYSEF 2026 International Joint Project
 
-## Files
+## Why GitHub Pages buttons previously did not work
 
-- `Code.gs`: Google Apps Script backend
-- `Index.html`: GAS HTML frontend
-- `assets/tamiya-logo.jpg`: TAMIYA logo
-- `assets/skysef-2026-logo.jpg`: SKYSEF 2026 logo
-- `appsscript.json`: Apps Script manifest
+The GAS user interface uses `google.script.run` and Apps Script template syntax.
+Those features only work when the page is served by Google Apps Script. They do
+not work when `GAS_Index.html` is opened directly from GitHub Pages.
 
-## GitHub Pages asset URLs
+Therefore:
 
-- `https://szkssh00-bit.github.io/SKYSEF/International_Joint_Project/assets/tamiya-logo.jpg`
-- `https://szkssh00-bit.github.io/SKYSEF/International_Joint_Project/assets/skysef-2026-logo.jpg`
+- `Index.html` is a GitHub Pages launcher that redirects to the GAS web app.
+- `GAS_Index.html` is the actual Apps Script interface.
+- `Code.gs` loads `GAS_Index.html`.
 
-`Index.html` uses these absolute URLs so the images can be displayed from the deployed GAS web app.
+The launcher preserves query parameters such as:
 
-## Important
+```text
+?id=SKYSEF2026-207
+?mode=live
+?mode=staff
+```
 
-GitHub Pages can host the image files and static documentation, but it cannot execute
-`google.script.run` or the Apps Script backend. Deploy the application itself as a
-Google Apps Script web app.
+## One-command deployment
 
-For local Git/GitHub management, use `clasp` to pull and push the Apps Script project.
-Do not commit `.clasprc.json`, because it contains authentication credentials.
+Run this command inside `International_Joint_Project`:
+
+```cmd
+deploy-all.cmd "Update message"
+```
+
+It performs:
+
+1. `clasp push --force`
+2. Update the existing GAS web-app deployment
+3. `git add`
+4. `git commit`
+5. `git push origin main`
+
+## Public URLs
+
+GitHub Pages launcher:
+
+```text
+https://szkssh00-bit.github.io/SKYSEF/International_Joint_Project/Index.html
+```
+
+GAS web app:
+
+```text
+https://script.google.com/macros/s/AKfycbxCP7Yb2_xw6PRdPOiFhRAMokDA9OEmR12fHjn57I5Mz_BGxF3_Nv8XYrf95xWKB-WrpA/exec
+```
+
+## Live screen
+
+The live screen shows three challenge columns simultaneously. Five teams are
+shown at a time, and the displayed team range changes automatically every
+6.5 seconds. No manual scrolling is required.

@@ -17,7 +17,7 @@ const SHEETS = {
 
 
 function doGet(e) {
-  const template = HtmlService.createTemplateFromFile('Index');
+  const template = HtmlService.createTemplateFromFile('GAS_Index');
   template.initialId = e && e.parameter && e.parameter.id ? String(e.parameter.id) : '';
   template.initialMode = e && e.parameter && e.parameter.mode ? String(e.parameter.mode) : 'home';
 
