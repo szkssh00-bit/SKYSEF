@@ -9,7 +9,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0deploy-all.ps1" -Messa
 
 if errorlevel 1 (
   echo.
-  echo UPDATE FAILED.
+  echo UPDATE FAILED. Nothing after the failed step was treated as successful.
   pause
   exit /b 1
 )

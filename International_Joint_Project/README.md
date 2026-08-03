@@ -43,3 +43,12 @@ This command performs:
 ```text
 https://szkssh00-bit.github.io/SKYSEF/International_Joint_Project/Index.html
 ```
+
+
+## Reliability fixes
+
+- HTML is explicitly read as UTF-8 before the JavaScript syntax check.
+- The temporary JavaScript file is written as UTF-8 without BOM.
+- Every `node`, `clasp`, and `git` command is checked for a non-zero exit code.
+- A failed command stops the update and no success message is printed.
+- `git pull --rebase origin main` runs before `git push` to integrate remote changes.

@@ -20,21 +20,28 @@ if (-not (Test-Path -LiteralPath $RepoPath)) {
 $Target = Join-Path $RepoPath "International_Joint_Project"
 $Temp = Join-Path $env:TEMP ("IJP_" + [guid]::NewGuid().ToString())
 
-Expand-Archive -LiteralPath $ZipPath -DestinationPath $Temp -Force
+try {
+  Expand-Archive -LiteralPath $ZipPath -DestinationPath $Temp -Force
 
-$Source = Join-Path $Temp "International_Joint_Project"
-if (-not (Test-Path -LiteralPath $Source)) {
-  throw "International_Joint_Project folder was not found inside the ZIP."
+  $Source = Join-Path $Temp "International_Joint_Project"
+
+  if (-not (Test-Path -LiteralPath $Source)) {
+    throw "International_Joint_Project folder was not found inside the ZIP."
+  }
+
+  if (Test-Path -LiteralPath $Target) {
+    $Backup = $Target + "_backup_" + (Get-Date -Format "yyyyMMdd_HHmmss")
+    Move-Item -LiteralPath $Target -Destination $Backup
+    Write-Host "Backup created: $Backup"
+  }
+
+  Move-Item -LiteralPath $Source -Destination $Target
+
+} finally {
+  if (Test-Path -LiteralPath $Temp) {
+    Remove-Item -LiteralPath $Temp -Recurse -Force
+  }
 }
-
-if (Test-Path -LiteralPath $Target) {
-  $Backup = $Target + "_backup_" + (Get-Date -Format "yyyyMMdd_HHmmss")
-  Move-Item -LiteralPath $Target -Destination $Backup
-  Write-Host "Backup created: $Backup"
-}
-
-Move-Item -LiteralPath $Source -Destination $Target
-Remove-Item -LiteralPath $Temp -Recurse -Force
 
 Set-Location $Target
 & ".\UPDATE_ALL.cmd" $Message
