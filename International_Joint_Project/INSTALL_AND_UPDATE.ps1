@@ -6,7 +6,7 @@
     "C:\Users\fuchigami.yuta\Documents\GitHub\SKYSEF",
 
   [string]$Message =
-    "Reduce Live team and result font sizes"
+    "Align Live challenge title heights"
 )
 
 $ErrorActionPreference = "Stop"

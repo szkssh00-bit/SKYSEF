@@ -97,3 +97,10 @@ The team and result text in the three Live challenge columns has been reduced to
 
 - Team: maximum 21 px
 - Result / WAITING: maximum 18 px
+
+
+## Live title alignment
+
+All three challenge title areas reserve two lines. As a result, the first
+`TEAM / WAITING` row begins at the same vertical position for Balance Beam,
+Obstacle Course, and Hill Climb.

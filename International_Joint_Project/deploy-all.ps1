@@ -1,5 +1,5 @@
 ﻿param(
-  [string]$Message = "Reduce Live team and result font sizes"
+  [string]$Message = "Align Live challenge title heights"
 )
 
 $ErrorActionPreference = "Stop"

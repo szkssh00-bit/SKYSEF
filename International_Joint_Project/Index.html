@@ -534,6 +534,34 @@ main{
   .live-all-results .rank-row .score{font-size:15px !important;}
 }
 
+
+/* ===== Align Live columns when challenge titles wrap differently ===== */
+.live-all-results .live-panel{
+  display:grid;
+  grid-template-rows:auto auto 1fr;
+  align-content:start;
+}
+
+/*
+  Reserve exactly two title lines for every challenge.
+  "Hill Climb" therefore occupies the same vertical title area as
+  "Balance Beam" and "Obstacle Course".
+*/
+.live-all-results .live-title{
+  line-height:1.05 !important;
+  min-height:2.10em !important;
+  height:2.10em !important;
+  margin:8px 0 18px !important;
+  display:flex;
+  align-items:flex-start;
+  overflow:hidden;
+}
+
+/* Start every team list at the same vertical position. */
+.live-all-results .all-team-list{
+  align-self:start;
+}
+
 </style>
 </head>
 
