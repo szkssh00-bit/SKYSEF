@@ -81,3 +81,11 @@ Then run:
 
 The updater uses `robocopy` to update the destination folder in place.
 It does not move the open `International_Joint_Project` directory.
+
+
+## TAMIYA logo size
+
+The TAMIYA logo is now twice the size of the previous version:
+
+- Desktop: 40% of the logo frame
+- Mobile: 36% of the logo frame

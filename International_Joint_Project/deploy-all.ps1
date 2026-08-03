@@ -1,5 +1,5 @@
 ﻿param(
-  [string]$Message = "Update International Joint Project"
+  [string]$Message = "Double TAMIYA logo size"
 )
 
 $ErrorActionPreference = "Stop"
@@ -37,35 +37,22 @@ if ($LASTEXITCODE -ne 0 -or -not $RepoRoot) {
 
 Write-Host "[1/8] Checking browser JavaScript syntax..."
 $IndexPath = Join-Path $PSScriptRoot "Index.html"
-
-# Windows PowerShell 5 may otherwise read UTF-8 HTML as the local ANSI code page.
 $HtmlText = Get-Content -LiteralPath $IndexPath -Raw -Encoding UTF8
-
-$Match = [regex]::Match(
-  $HtmlText,
-  "<script>([\s\S]*)</script>"
-)
+$Match = [regex]::Match($HtmlText, "<script>([\s\S]*)</script>")
 
 if (-not $Match.Success) {
   throw "The JavaScript block was not found in Index.html."
 }
 
-$TempJs = Join-Path $env:TEMP (
-  "ijp_check_" +
-  [guid]::NewGuid().ToString() +
-  ".js"
-)
+$TempJs = Join-Path $env:TEMP ("ijp_check_" + [guid]::NewGuid().ToString() + ".js")
 
 try {
-  # UTF-8 without BOM avoids encoding ambiguity in the temporary JavaScript file.
   [System.IO.File]::WriteAllText(
     $TempJs,
     $Match.Groups[1].Value,
     [System.Text.UTF8Encoding]::new($false)
   )
-
   Invoke-Native node --check $TempJs
-
 } finally {
   Remove-Item -LiteralPath $TempJs -Force -ErrorAction SilentlyContinue
 }
@@ -84,7 +71,6 @@ Invoke-Native git -C $RepoRoot add International_Joint_Project
 
 Write-Host "[6/8] Committing local changes..."
 $Pending = git -C $RepoRoot status --porcelain
-
 if ($LASTEXITCODE -ne 0) {
   throw "git status failed."
 }
