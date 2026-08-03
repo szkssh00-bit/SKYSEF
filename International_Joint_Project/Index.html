@@ -419,6 +419,62 @@ main{
   }
 }
 
+
+/* ======================================================
+   Rebuilt logo layout
+   ====================================================== */
+
+/* Home, Live, and Presentation:
+   SKYSEF on the left, TAMIYA on the right. */
+.home-logo-row,
+.live-logo-row,
+.ceremony-logo-row{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  align-items:center;
+}
+
+/* SKYSEF uses the full logo frame. */
+.skysef-logo-frame img{
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+}
+
+/* TAMIYA is intentionally smaller, approximately 50%. */
+.tamiya-logo-frame{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+.tamiya-logo-frame img{
+  width:50% !important;
+  height:auto !important;
+  max-width:50% !important;
+  max-height:50% !important;
+  object-fit:contain !important;
+}
+
+/* Home SKYSEF artwork remains 7 px upward. */
+.home-logo-row .skysef-logo-frame{
+  transform:translateY(-7px) !important;
+}
+
+@media(max-width:850px){
+  .home-logo-row,
+  .live-logo-row,
+  .ceremony-logo-row{
+    grid-template-columns:1fr;
+  }
+
+  .tamiya-logo-frame img{
+    width:45% !important;
+    max-width:45% !important;
+  }
+}
+
 </style>
 </head>
 

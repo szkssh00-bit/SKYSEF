@@ -52,3 +52,32 @@ https://szkssh00-bit.github.io/SKYSEF/International_Joint_Project/Index.html
 - Every `node`, `clasp`, and `git` command is checked for a non-zero exit code.
 - A failed command stops the update and no success message is printed.
 - `git pull --rebase origin main` runs before `git push` to integrate remote changes.
+
+
+## Rebuilt logo assets
+
+The attached SKYSEF and TAMIYA image files were added again.
+
+- Left: SKYSEF logo
+- Right: TAMIYA logo
+- TAMIYA is approximately 50% size
+- Applied to Home, Live, and Presentation
+- Home SKYSEF remains shifted 7 px upward
+
+## One-command replacement
+
+Place these two files in Downloads:
+
+```text
+International_Joint_Project_REBUILT_WITH_LOGOS.zip
+ONE_CLICK_REBUILD_IJP.cmd
+```
+
+Then run:
+
+```cmd
+"C:\Users\fuchigami.yuta\Downloads\ONE_CLICK_REBUILD_IJP.cmd"
+```
+
+The updater uses `robocopy` to update the destination folder in place.
+It does not move the open `International_Joint_Project` directory.
