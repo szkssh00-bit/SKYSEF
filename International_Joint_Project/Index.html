@@ -284,13 +284,141 @@ main{
 }
 
 
-.home-logo-right img,.live-logo-right img,.ceremony-logo-right img{max-height:48px;width:auto}
-.home-logo-left img,.live-logo-left img,.ceremony-logo-left img{max-height:78px;width:auto}
-.live-all-results .live-title{font-size:clamp(30px,3.6vw,48px)!important}
-.live-all-results .rank-row{min-height:76px!important}
-.live-all-results .rank{font-size:clamp(24px,2.7vw,38px)!important}
-.live-all-results .team{font-size:clamp(28px,3vw,42px)!important}
-.live-all-results .score{font-size:clamp(24px,2.5vw,36px)!important}
+/* ======================================================
+   Final logo and projector layout
+   ====================================================== */
+
+/* SKYSEF is displayed on the left at the normal size. */
+.skysef-logo-frame img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+/* TAMIYA is displayed on the right at approximately 50%. */
+.tamiya-logo-frame{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.tamiya-logo-frame img{
+  width:50% !important;
+  height:50% !important;
+  max-width:50% !important;
+  max-height:50% !important;
+  object-fit:contain;
+}
+
+/* Move only the Home SKYSEF artwork 7 px upward. */
+.home-logo-row .skysef-logo-frame{
+  transform:translateY(-7px);
+}
+
+/* Remove obsolete right-logo transforms. */
+.home-logo-right,
+.live-logo-right,
+.ceremony-logo-right{
+  transform:none !important;
+}
+
+/* Three challenge columns remain visible simultaneously. */
+.live-all-results{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  margin-top:16px;
+}
+
+/* Five teams are shown without manual scrolling. */
+.all-team-list{
+  min-height:408px;
+  max-height:none;
+  overflow:hidden;
+}
+
+/* Projector-sized live typography. */
+.live-all-results .live-panel{
+  padding:24px;
+}
+
+.live-all-results .kicker{
+  font-size:15px;
+  letter-spacing:.14em;
+}
+
+.live-all-results .live-title{
+  font-size:clamp(30px,3.6vw,48px);
+  margin:8px 0 18px;
+}
+
+.live-all-results .rank-row{
+  grid-template-columns:72px minmax(0,1fr) auto;
+  min-height:76px;
+  padding:14px 16px;
+  gap:14px;
+}
+
+.live-all-results .rank-row .rank{
+  font-size:clamp(24px,2.7vw,38px);
+  line-height:1;
+}
+
+.live-all-results .rank-row .team{
+  font-size:clamp(25px,3vw,42px);
+  line-height:1.05;
+  letter-spacing:-.02em;
+}
+
+.live-all-results .rank-row .score{
+  font-size:clamp(22px,2.5vw,36px);
+  line-height:1.05;
+  text-align:right;
+  white-space:nowrap;
+}
+
+.live-page-indicator{
+  margin-top:18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+@media(max-width:1100px){
+  .live-all-results .rank-row{
+    grid-template-columns:58px minmax(0,1fr) auto;
+    padding:12px;
+  }
+
+  .live-all-results .rank-row .team{
+    font-size:clamp(22px,2.8vw,34px);
+  }
+
+  .live-all-results .rank-row .score{
+    font-size:clamp(18px,2.3vw,28px);
+  }
+}
+
+@media(max-width:850px){
+  .home-logo-row,
+  .live-logo-row,
+  .ceremony-logo-row,
+  .live-all-results{
+    grid-template-columns:1fr;
+  }
+
+  .live-all-results .rank-row{
+    grid-template-columns:64px minmax(0,1fr) auto;
+  }
+
+  .tamiya-logo-frame img{
+    width:45% !important;
+    height:45% !important;
+  }
+}
+
 </style>
 </head>
 
@@ -313,11 +441,11 @@ main{
 <section id="page-home" class="page active">
 
   <div class="home-logo-row">
-    <div class="home-logo-frame">
-      <img src="./assets/tamiya-logo.jpg" alt="TAMIYA logo">
-    </div>
-    <div class="home-logo-frame home-logo-right">
+    <div class="home-logo-frame skysef-logo-frame">
       <img src="./assets/skysef-2026-logo.jpg" alt="SKYSEF 2026 logo">
+    </div>
+    <div class="home-logo-frame tamiya-logo-frame">
+      <img src="./assets/tamiya-logo.jpg" alt="TAMIYA logo">
     </div>
   </div>
 
@@ -526,12 +654,12 @@ main{
   <div class="live-shell">
 
     <div class="live-logo-row">
-      <div class="live-logo-frame live-logo-right">
-        <img src="./assets/tamiya-logo.jpg" alt="TAMIYA logo">
+      <div class="live-logo-frame skysef-logo-frame">
+        <img src="./assets/skysef-2026-logo.jpg" alt="SKYSEF 2026 logo">
       </div>
 
-      <div class="live-logo-frame">
-        <img src="./assets/skysef-2026-logo.jpg" alt="SKYSEF 2026 logo">
+      <div class="live-logo-frame tamiya-logo-frame">
+        <img src="./assets/tamiya-logo.jpg" alt="TAMIYA logo">
       </div>
     </div>
     <div class="live-top">
@@ -571,6 +699,10 @@ main{
         <div id="liveChallenge3List" class="rank-list all-team-list"></div>
       </div>
     </div>
+
+    <div id="livePageIndicator" class="live-page-indicator">
+      TEAMS 01–05 / 35
+    </div>
   </div>
 </section>
 
@@ -591,12 +723,12 @@ main{
     <div class="ceremony-content">
 
       <div class="ceremony-logo-row">
-        <div class="ceremony-logo-frame ceremony-logo-right">
-          <img src="./assets/tamiya-logo.jpg" alt="TAMIYA logo">
+        <div class="ceremony-logo-frame skysef-logo-frame">
+          <img src="./assets/skysef-2026-logo.jpg" alt="SKYSEF 2026 logo">
         </div>
 
-        <div class="ceremony-logo-frame">
-          <img src="./assets/skysef-2026-logo.jpg" alt="SKYSEF 2026 logo">
+        <div class="ceremony-logo-frame tamiya-logo-frame">
+          <img src="./assets/tamiya-logo.jpg" alt="TAMIYA logo">
         </div>
       </div>
 
@@ -845,6 +977,7 @@ function apiRequest(
           script
         );
     }
+  );
 }
 
 /* -------------------- ROUTING -------------------- */
