@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0"
 
 set "MESSAGE=%~1"
-if "%MESSAGE%"=="" set "MESSAGE=Double TAMIYA logo size"
+if "%MESSAGE%"=="" set "MESSAGE=Reduce Live team and result font sizes"
 
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0deploy-all.ps1" -Message "%MESSAGE%"
 

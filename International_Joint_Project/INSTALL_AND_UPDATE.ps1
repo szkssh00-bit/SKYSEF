@@ -6,7 +6,7 @@
     "C:\Users\fuchigami.yuta\Documents\GitHub\SKYSEF",
 
   [string]$Message =
-    "Double TAMIYA logo size"
+    "Reduce Live team and result font sizes"
 )
 
 $ErrorActionPreference = "Stop"

@@ -1,5 +1,5 @@
 ﻿param(
-  [string]$Message = "Double TAMIYA logo size"
+  [string]$Message = "Reduce Live team and result font sizes"
 )
 
 $ErrorActionPreference = "Stop"

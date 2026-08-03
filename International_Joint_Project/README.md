@@ -89,3 +89,11 @@ The TAMIYA logo is now twice the size of the previous version:
 
 - Desktop: 40% of the logo frame
 - Mobile: 36% of the logo frame
+
+
+## Live font-size adjustment
+
+The team and result text in the three Live challenge columns has been reduced to approximately half of the previous size.
+
+- Team: maximum 21 px
+- Result / WAITING: maximum 18 px
