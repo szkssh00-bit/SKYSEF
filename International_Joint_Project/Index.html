@@ -283,6 +283,14 @@ main{
   transform:translateY(-7px) !important;
 }
 
+
+.home-logo-right img,.live-logo-right img,.ceremony-logo-right img{max-height:48px;width:auto}
+.home-logo-left img,.live-logo-left img,.ceremony-logo-left img{max-height:78px;width:auto}
+.live-all-results .live-title{font-size:clamp(30px,3.6vw,48px)!important}
+.live-all-results .rank-row{min-height:76px!important}
+.live-all-results .rank{font-size:clamp(24px,2.7vw,38px)!important}
+.live-all-results .team{font-size:clamp(28px,3vw,42px)!important}
+.live-all-results .score{font-size:clamp(24px,2.5vw,36px)!important}
 </style>
 </head>
 
@@ -837,7 +845,6 @@ function apiRequest(
           script
         );
     }
-  );
 }
 
 /* -------------------- ROUTING -------------------- */
@@ -2180,7 +2187,7 @@ function renderChallengeColumn(
           ];
 
         let value =
-          'No result';
+          'WAITING';
 
         let rank =
           result.rank ||
