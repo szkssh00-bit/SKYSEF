@@ -119,3 +119,10 @@ provide a `LIVE MOVIE` button.
 - On narrow screens, the camera panel moves above the result-entry interface.
 
 Camera access requires HTTPS and browser permission.
+
+
+## Larger judge camera area
+
+When `LIVE MOVIE` is ON, the camera occupies approximately 60% of the horizontal
+layout and the input form occupies approximately 40%. On narrower screens, the
+camera is shown full-width above the form.

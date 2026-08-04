@@ -689,6 +689,44 @@ main{
   }
 }
 
+
+/* ===== Larger judge camera area ===== */
+.judge-layout.camera-on{
+  grid-template-columns:minmax(320px,40%) minmax(520px,60%) !important;
+  gap:22px;
+}
+
+.judge-layout.camera-on .judge-camera-panel{
+  width:100%;
+  min-height:520px;
+  padding:18px;
+}
+
+.judge-camera-video{
+  width:100%;
+  min-height:430px;
+  aspect-ratio:16 / 10;
+  object-fit:cover;
+}
+
+@media(max-width:1150px){
+  .judge-layout.camera-on{
+    grid-template-columns:1fr !important;
+  }
+
+  .judge-camera-panel{
+    position:relative;
+    top:auto;
+    order:-1;
+    min-height:0 !important;
+  }
+
+  .judge-camera-video{
+    min-height:0;
+    aspect-ratio:16 / 9;
+  }
+}
+
 </style>
 </head>
 
