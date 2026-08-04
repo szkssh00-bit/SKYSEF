@@ -126,3 +126,16 @@ Camera access requires HTTPS and browser permission.
 When `LIVE MOVIE` is ON, the camera occupies approximately 60% of the horizontal
 layout and the input form occupies approximately 40%. On narrower screens, the
 camera is shown full-width above the form.
+
+
+## Stopwatch precision
+
+The stopwatch now displays hundredths of a second:
+
+```text
+00:00.00
+```
+
+The manual time input uses a `0.01` second step. Live time values are also
+displayed with two decimal places. The stopwatch font is reduced while the
+camera is open to prevent horizontal overflow.

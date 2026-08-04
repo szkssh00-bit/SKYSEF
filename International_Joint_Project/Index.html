@@ -727,6 +727,27 @@ main{
   }
 }
 
+
+/* ===== Stopwatch: show hundredths and avoid overflow with camera ON ===== */
+.judge-layout.camera-on .stopwatch{
+  font-size:clamp(46px,7vw,82px) !important;
+  letter-spacing:-.045em !important;
+  white-space:nowrap;
+}
+
+@media(max-width:1150px){
+  .judge-layout.camera-on .stopwatch{
+    font-size:clamp(50px,10vw,92px) !important;
+  }
+}
+
+@media(max-width:620px){
+  .stopwatch,
+  .judge-layout.camera-on .stopwatch{
+    font-size:clamp(42px,15vw,68px) !important;
+  }
+}
+
 </style>
 </head>
 
@@ -912,7 +933,7 @@ main{
       </div>
 
       <div class="card" style="margin-top:16px">
-        <div id="stopwatchDisplay" class="stopwatch">00:00.000</div>
+        <div id="stopwatchDisplay" class="stopwatch">00:00.00</div>
 
         <div class="stop-controls">
           <button class="start" onclick="startStopwatch()">START</button>
@@ -921,7 +942,7 @@ main{
         </div>
 
         <div class="manual">
-          <input id="manualTime" type="number" step="0.001" min="0" placeholder="Time in seconds">
+          <input id="manualTime" type="number" step="0.01" min="0" placeholder="Time in seconds">
           <strong>seconds</strong>
         </div>
 
@@ -1874,7 +1895,7 @@ function finishStopwatch() {
       (
         swElapsed /
         1000
-      ).toFixed(3);
+      ).toFixed(2);
 
   updateTimedSubmitState();
 }
@@ -1899,7 +1920,7 @@ function resetStopwatch() {
 
   if (display) {
     display.textContent =
-      '00:00.000';
+      '00:00.00';
   }
 
   const input =
@@ -1936,9 +1957,14 @@ function formatMs(ms) {
       1000
     );
 
-  const milliseconds =
-    total %
-    1000;
+  const hundredths =
+    Math.floor(
+      (
+        total %
+        1000
+      ) /
+      10
+    );
 
   return (
     String(minutes)
@@ -1947,8 +1973,8 @@ function formatMs(ms) {
     String(seconds)
       .padStart(2,'0') +
     '.' +
-    String(milliseconds)
-      .padStart(3,'0')
+    String(hundredths)
+      .padStart(2,'0')
   );
 }
 
@@ -2523,7 +2549,7 @@ function renderLatest(latest) {
     valueText =
       Number(
         latest.value
-      ).toFixed(3) +
+      ).toFixed(2) +
       ' s';
 
   } else if (
@@ -2703,7 +2729,7 @@ function renderChallengeColumn(
             value =
               Number(
                 result.time
-              ).toFixed(3) +
+              ).toFixed(2) +
               ' s';
 
           } else if (
