@@ -104,3 +104,18 @@ The team and result text in the three Live challenge columns has been reduced to
 All three challenge title areas reserve two lines. As a result, the first
 `TEAM / WAITING` row begins at the same vertical position for Balance Beam,
 Obstacle Course, and Hill Climb.
+
+
+## Judge live movie
+
+After staff password `2026` is entered, the timed and angle judging screens
+provide a `LIVE MOVIE` button.
+
+- OFF: only the result-entry interface is displayed.
+- ON: a right-side camera panel is opened.
+- The browser requests the back camera with `facingMode: environment`.
+- Audio is disabled.
+- Camera tracks are stopped when OFF is selected or the judging page is closed.
+- On narrow screens, the camera panel moves above the result-entry interface.
+
+Camera access requires HTTPS and browser permission.

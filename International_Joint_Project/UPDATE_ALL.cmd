@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0"
 
 set "MESSAGE=%~1"
-if "%MESSAGE%"=="" set "MESSAGE=Align Live challenge title heights"
+if "%MESSAGE%"=="" set "MESSAGE=Add judge live movie camera panel"
 
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0deploy-all.ps1" -Message "%MESSAGE%"
 

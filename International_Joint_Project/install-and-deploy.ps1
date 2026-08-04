@@ -6,7 +6,7 @@
     "C:\Users\fuchigami.yuta\Documents\GitHub\SKYSEF",
 
   [string]$Message =
-    "Align Live challenge title heights"
+    "Add judge live movie camera panel"
 )
 
 $ErrorActionPreference = "Stop"

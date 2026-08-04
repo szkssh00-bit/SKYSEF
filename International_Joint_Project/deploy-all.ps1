@@ -1,5 +1,5 @@
 ﻿param(
-  [string]$Message = "Align Live challenge title heights"
+  [string]$Message = "Add judge live movie camera panel"
 )
 
 $ErrorActionPreference = "Stop"
