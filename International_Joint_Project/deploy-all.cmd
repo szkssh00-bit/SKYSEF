@@ -3,7 +3,7 @@ setlocal
 cd /d "%~dp0"
 
 set "MESSAGE=%~1"
-if "%MESSAGE%"=="" set "MESSAGE=Add judge live movie camera panel"
+if "%MESSAGE%"=="" set "MESSAGE=Maximize judge camera area"
 
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0deploy-all.ps1" -Message "%MESSAGE%"
 

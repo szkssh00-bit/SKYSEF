@@ -5,8 +5,7 @@
   [string]$RepoPath =
     "C:\Users\fuchigami.yuta\Documents\GitHub\SKYSEF",
 
-  [string]$Message =
-    "Add judge live movie camera panel"
+  [string]$Message = "Maximize judge camera area"
 )
 
 $ErrorActionPreference = "Stop"

@@ -748,6 +748,113 @@ main{
   }
 }
 
+
+/* ===== Maximize judge camera within the available viewport ===== */
+
+/*
+  With LIVE MOVIE ON, the form uses only the necessary width.
+  The camera consumes all remaining horizontal and vertical space.
+*/
+.judge-layout.camera-on{
+  width:100%;
+  max-width:none;
+  grid-template-columns:minmax(300px,34%) minmax(0,66%) !important;
+  gap:16px !important;
+  align-items:stretch;
+}
+
+.judge-layout.camera-on .judge-form-column{
+  min-width:0;
+}
+
+.judge-layout.camera-on .judge-camera-panel{
+  width:100%;
+  height:calc(100vh - 150px);
+  min-height:560px;
+  max-height:none;
+  padding:10px !important;
+  margin:0;
+  position:sticky;
+  top:78px;
+  display:flex;
+  flex-direction:column;
+}
+
+.judge-layout.camera-on .judge-camera-stage{
+  flex:1 1 auto;
+  min-height:0;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border-radius:16px;
+  background:#090b0a;
+}
+
+.judge-layout.camera-on .judge-camera-video{
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  max-height:none !important;
+  aspect-ratio:auto !important;
+  object-fit:contain !important;
+  display:block;
+  background:#090b0a;
+}
+
+/* Keep controls compact so the video gets the maximum area. */
+.judge-layout.camera-on .judge-camera-header{
+  flex:0 0 auto;
+  margin-bottom:8px;
+}
+
+.judge-layout.camera-on .judge-camera-note{
+  flex:0 0 auto;
+  margin-top:7px;
+  font-size:11px;
+}
+
+/* Medium screens: camera remains dominant and appears above the form. */
+@media(max-width:1180px){
+  .judge-layout.camera-on{
+    grid-template-columns:1fr !important;
+  }
+
+  .judge-layout.camera-on .judge-camera-panel{
+    order:-1;
+    position:relative;
+    top:auto;
+    height:min(68vh,760px);
+    min-height:440px;
+  }
+}
+
+/* Mobile: use nearly all available screen width and a large 16:9 area. */
+@media(max-width:700px){
+  main{
+    width:calc(100% - 8px);
+  }
+
+  .judge-layout.camera-on{
+    gap:10px !important;
+  }
+
+  .judge-layout.camera-on .judge-camera-panel{
+    height:auto;
+    min-height:0;
+    padding:6px !important;
+  }
+
+  .judge-layout.camera-on .judge-camera-stage{
+    aspect-ratio:16 / 9;
+  }
+
+  .judge-layout.camera-on .judge-camera-video{
+    aspect-ratio:16 / 9 !important;
+  }
+}
+
 </style>
 </head>
 

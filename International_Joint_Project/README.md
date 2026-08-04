@@ -139,3 +139,14 @@ The stopwatch now displays hundredths of a second:
 The manual time input uses a `0.01` second step. Live time values are also
 displayed with two decimal places. The stopwatch font is reduced while the
 camera is open to prevent horizontal overflow.
+
+
+## Maximum judge camera area
+
+When `LIVE MOVIE` is ON:
+
+- The camera uses approximately 66% of the desktop width.
+- The camera panel height follows the available viewport.
+- The video uses all available space inside the panel.
+- The complete camera image is preserved with `object-fit: contain`.
+- On medium and mobile screens, the camera moves above the form and remains large.
