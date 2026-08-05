@@ -150,3 +150,14 @@ When `LIVE MOVIE` is ON:
 - The video uses all available space inside the panel.
 - The complete camera image is preserved with `object-fit: contain`.
 - On medium and mobile screens, the camera moves above the form and remains large.
+
+
+## Selectable back camera
+
+The judge camera panel now includes a camera selector.
+
+- `Auto-select back camera` prioritizes rear, environment, USB, or external cameras.
+- All detected video inputs are listed after camera permission is granted.
+- The selected camera is remembered during the browser session.
+- The camera can be changed while `LIVE MOVIE` is ON.
+- Connecting or removing a USB camera refreshes the device list automatically.

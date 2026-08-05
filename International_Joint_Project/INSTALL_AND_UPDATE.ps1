@@ -5,7 +5,7 @@
   [string]$RepoPath =
     "C:\Users\fuchigami.yuta\Documents\GitHub\SKYSEF",
 
-  [string]$Message = "Maximize judge camera area"
+  [string]$Message = "Add selectable back camera"
 )
 
 $ErrorActionPreference = "Stop"

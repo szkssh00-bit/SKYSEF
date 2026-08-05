@@ -1,5 +1,5 @@
 ﻿param(
-  [string]$Message = "Maximize judge camera area"
+  [string]$Message = "Add selectable back camera"
 )
 
 $ErrorActionPreference = "Stop"

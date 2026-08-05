@@ -855,6 +855,51 @@ main{
   }
 }
 
+
+/* ===== Selectable back camera ===== */
+.camera-device-row{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:center;
+  gap:10px;
+  margin:0 0 10px;
+}
+
+.camera-device-row label{
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.08em;
+  color:var(--muted);
+}
+
+.camera-device-select{
+  width:100%;
+  min-width:0;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  color:var(--ink);
+  font-weight:800;
+  outline:none;
+}
+
+.camera-device-select:focus{
+  border-color:var(--green);
+}
+
+.judge-camera-stage{
+  flex:1 1 auto;
+  min-height:0;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border-radius:16px;
+  background:#090b0a;
+}
+
 </style>
 </head>
 
@@ -1079,7 +1124,16 @@ main{
         </div>
         <button class="camera-close" type="button" onclick="toggleJudgeCamera('timed', false)">OFF</button>
       </div>
-      <video id="timedCameraVideo" class="judge-camera-video" autoplay muted playsinline></video>
+      <div class="camera-device-row">
+        <label for="timedCameraSelect">Camera</label>
+        <select id="timedCameraSelect" class="camera-device-select"
+          onchange="changeJudgeCamera('timed')">
+          <option value="">Auto-select back camera</option>
+        </select>
+      </div>
+      <div class="judge-camera-stage">
+        <video id="timedCameraVideo" class="judge-camera-video" autoplay muted playsinline></video>
+      </div>
       <div id="timedCameraMessage" class="camera-message">Camera is off.</div>
     </aside>
   </div>
@@ -1122,7 +1176,16 @@ main{
         </div>
         <button class="camera-close" type="button" onclick="toggleJudgeCamera('angle', false)">OFF</button>
       </div>
-      <video id="angleCameraVideo" class="judge-camera-video" autoplay muted playsinline></video>
+      <div class="camera-device-row">
+        <label for="angleCameraSelect">Camera</label>
+        <select id="angleCameraSelect" class="camera-device-select"
+          onchange="changeJudgeCamera('angle')">
+          <option value="">Auto-select back camera</option>
+        </select>
+      </div>
+      <div class="judge-camera-stage">
+        <video id="angleCameraVideo" class="judge-camera-video" autoplay muted playsinline></video>
+      </div>
       <div id="angleCameraMessage" class="camera-message">Camera is off.</div>
     </aside>
   </div>
@@ -3168,7 +3231,260 @@ document.addEventListener(
 
 /* -------------------- JUDGE CAMERA -------------------- */
 
-async function toggleJudgeCamera(page, forceState) {
+async function getJudgeCameraDevices() {
+  if (
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.enumerateDevices
+  ) {
+    return [];
+  }
+
+  const devices =
+    await navigator.mediaDevices.enumerateDevices();
+
+  return devices.filter(
+    device =>
+      device.kind === 'videoinput'
+  );
+}
+
+function scoreBackCamera_(device) {
+  const label =
+    String(device.label || '').toLowerCase();
+
+  let score = 0;
+
+  [
+    'back',
+    'rear',
+    'environment',
+    'world',
+    'usb',
+    'external'
+  ].forEach(keyword => {
+    if (label.includes(keyword)) {
+      score += 10;
+    }
+  });
+
+  [
+    'front',
+    'user',
+    'facetime'
+  ].forEach(keyword => {
+    if (label.includes(keyword)) {
+      score -= 20;
+    }
+  });
+
+  return score;
+}
+
+function chooseBackCameraDevice_(
+  devices,
+  selectedDeviceId
+) {
+  if (selectedDeviceId) {
+    const selected =
+      devices.find(
+        device =>
+          device.deviceId ===
+          selectedDeviceId
+      );
+
+    if (selected) {
+      return selected;
+    }
+  }
+
+  if (!devices.length) {
+    return null;
+  }
+
+  return [...devices].sort(
+    (a, b) =>
+      scoreBackCamera_(b) -
+      scoreBackCamera_(a)
+  )[0];
+}
+
+async function populateJudgeCameraSelects(
+  preferredDeviceId = ''
+) {
+  const devices =
+    await getJudgeCameraDevices();
+
+  ['timed', 'angle'].forEach(page => {
+    const select =
+      document.getElementById(
+        page + 'CameraSelect'
+      );
+
+    if (!select) {
+      return;
+    }
+
+    const previous =
+      preferredDeviceId ||
+      select.value ||
+      sessionStorage.getItem(
+        'skysefJudgeCameraId'
+      ) ||
+      '';
+
+    select.innerHTML =
+      '<option value="">Auto-select back camera</option>';
+
+    devices.forEach((device, index) => {
+      const option =
+        document.createElement('option');
+
+      option.value =
+        device.deviceId;
+
+      option.textContent =
+        device.label ||
+        ('Camera ' + (index + 1));
+
+      select.appendChild(option);
+    });
+
+    if (
+      previous &&
+      devices.some(
+        device =>
+          device.deviceId === previous
+      )
+    ) {
+      select.value = previous;
+    }
+  });
+
+  return devices;
+}
+
+async function startJudgeCamera(
+  page,
+  selectedDeviceId = ''
+) {
+  const video =
+    document.getElementById(
+      page + 'CameraVideo'
+    );
+
+  const message =
+    document.getElementById(
+      page + 'CameraMessage'
+    );
+
+  if (message) {
+    message.textContent =
+      'Starting camera...';
+  }
+
+  if (judgeCameraStream) {
+    judgeCameraStream
+      .getTracks()
+      .forEach(track => track.stop());
+
+    judgeCameraStream = null;
+  }
+
+  let devices =
+    await getJudgeCameraDevices();
+
+  const chosen =
+    chooseBackCameraDevice_(
+      devices,
+      selectedDeviceId
+    );
+
+  const videoConstraints =
+    chosen && chosen.deviceId
+      ? {
+          deviceId: {
+            exact: chosen.deviceId
+          },
+          width: {
+            ideal: 1920
+          },
+          height: {
+            ideal: 1080
+          },
+          frameRate: {
+            ideal: 30,
+            max: 30
+          }
+        }
+      : {
+          facingMode: {
+            ideal: 'environment'
+          },
+          width: {
+            ideal: 1920
+          },
+          height: {
+            ideal: 1080
+          },
+          frameRate: {
+            ideal: 30,
+            max: 30
+          }
+        };
+
+  judgeCameraStream =
+    await navigator.mediaDevices
+      .getUserMedia({
+        audio: false,
+        video: videoConstraints
+      });
+
+  if (video) {
+    video.srcObject =
+      judgeCameraStream;
+
+    await video.play();
+  }
+
+  const track =
+    judgeCameraStream
+      .getVideoTracks()[0];
+
+  const settings =
+    track && track.getSettings
+      ? track.getSettings()
+      : {};
+
+  const activeId =
+    settings.deviceId || '';
+
+  if (activeId) {
+    sessionStorage.setItem(
+      'skysefJudgeCameraId',
+      activeId
+    );
+  }
+
+  await populateJudgeCameraSelects(
+    activeId
+  );
+
+  if (message) {
+    const label =
+      track && track.label
+        ? track.label
+        : 'Selected camera';
+
+    message.textContent =
+      label +
+      ' is live. Select another camera when necessary.';
+  }
+}
+
+async function toggleJudgeCamera(
+  page,
+  forceState
+) {
   if (!requireStaff()) {
     return;
   }
@@ -3220,10 +3536,7 @@ async function toggleJudgeCamera(page, forceState) {
 
   activeJudgeCameraPage = page;
 
-  layout.classList.add(
-    'camera-on'
-  );
-
+  layout.classList.add('camera-on');
   panel.setAttribute(
     'aria-hidden',
     'false'
@@ -3233,64 +3546,17 @@ async function toggleJudgeCamera(page, forceState) {
   button.textContent =
     'LIVE MOVIE: ON';
 
-  const video =
-    document.getElementById(
-      page + 'CameraVideo'
-    );
-
-  const message =
-    document.getElementById(
-      page + 'CameraMessage'
-    );
-
-  if (message) {
-    message.textContent =
-      'Starting the back camera...';
-  }
-
   try {
-    judgeCameraStream =
-      await navigator.mediaDevices
-        .getUserMedia({
-          audio: false,
-          video: {
-            facingMode: {
-              ideal: 'environment'
-            },
-            width: {
-              ideal: 1280
-            },
-            height: {
-              ideal: 720
-            },
-            frameRate: {
-              ideal: 30,
-              max: 30
-            }
-          }
-        });
-
-    if (video) {
-      video.srcObject =
-        judgeCameraStream;
-
-      await video.play();
-    }
-
-    if (message) {
-      const track =
-        judgeCameraStream
-          .getVideoTracks()[0];
-
-      const label =
-        track && track.label
-          ? track.label
-          : 'Back camera';
-
-      message.textContent =
-        label +
-        ' is live. Camera video is displayed only while LIVE MOVIE is ON.';
-    }
+    /*
+      Start once with environment preference so the browser grants permission
+      and exposes camera labels. Then the selector can list all devices.
+    */
+    await startJudgeCamera(
+      page,
+      sessionStorage.getItem(
+        'skysefJudgeCameraId'
+      ) || ''
+    );
 
   } catch (error) {
     stopJudgeCamera();
@@ -3308,76 +3574,114 @@ async function toggleJudgeCamera(page, forceState) {
   }
 }
 
+async function changeJudgeCamera(page) {
+  if (
+    activeJudgeCameraPage !== page ||
+    !judgeCameraStream
+  ) {
+    return;
+  }
+
+  const select =
+    document.getElementById(
+      page + 'CameraSelect'
+    );
+
+  const selectedDeviceId =
+    select ? select.value : '';
+
+  try {
+    await startJudgeCamera(
+      page,
+      selectedDeviceId
+    );
+
+  } catch (error) {
+    toast(
+      'The selected camera could not be started.'
+    );
+  }
+}
+
 function stopJudgeCamera() {
   if (judgeCameraStream) {
     judgeCameraStream
       .getTracks()
-      .forEach(
-        track =>
-          track.stop()
-      );
+      .forEach(track => track.stop());
   }
 
   judgeCameraStream = null;
 
-  ['timed', 'angle']
-    .forEach(page => {
-      const layout =
-        document.getElementById(
-          page + 'JudgeLayout'
-        );
+  ['timed', 'angle'].forEach(page => {
+    const layout =
+      document.getElementById(
+        page + 'JudgeLayout'
+      );
 
-      const panel =
-        document.getElementById(
-          page + 'CameraPanel'
-        );
+    const panel =
+      document.getElementById(
+        page + 'CameraPanel'
+      );
 
-      const button =
-        document.getElementById(
-          page + 'CameraToggle'
-        );
+    const button =
+      document.getElementById(
+        page + 'CameraToggle'
+      );
 
-      const video =
-        document.getElementById(
-          page + 'CameraVideo'
-        );
+    const video =
+      document.getElementById(
+        page + 'CameraVideo'
+      );
 
-      const message =
-        document.getElementById(
-          page + 'CameraMessage'
-        );
+    const message =
+      document.getElementById(
+        page + 'CameraMessage'
+      );
 
-      if (layout) {
-        layout.classList.remove(
-          'camera-on'
-        );
-      }
+    if (layout) {
+      layout.classList.remove(
+        'camera-on'
+      );
+    }
 
-      if (panel) {
-        panel.setAttribute(
-          'aria-hidden',
-          'true'
-        );
-      }
+    if (panel) {
+      panel.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+    }
 
-      if (button) {
-        button.classList.remove('on');
-        button.textContent =
-          'LIVE MOVIE: OFF';
-      }
+    if (button) {
+      button.classList.remove('on');
+      button.textContent =
+        'LIVE MOVIE: OFF';
+    }
 
-      if (video) {
-        video.pause();
-        video.srcObject = null;
-      }
+    if (video) {
+      video.pause();
+      video.srcObject = null;
+    }
 
-      if (message) {
-        message.textContent =
-          'Camera is off.';
-      }
-    });
+    if (message) {
+      message.textContent =
+        'Camera is off.';
+    }
+  });
 
   activeJudgeCameraPage = '';
+}
+
+if (
+  navigator.mediaDevices &&
+  navigator.mediaDevices.addEventListener
+) {
+  navigator.mediaDevices.addEventListener(
+    'devicechange',
+    () => {
+      populateJudgeCameraSelects()
+        .catch(() => {});
+    }
+  );
 }
 
 window.addEventListener(
