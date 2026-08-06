@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SKYSEF 2026 | Shizuoka Kita Youth Science Engineering Forum</title>
-  <meta name="description" content="SKYSEF 2026 official concept page: international student science forum hosted by Shizuoka Kita High School.">
+  <meta name="description" content="SKYSEF 2026 official concept page: international student science forum hosted by Shizuoka Kita High School." />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -169,10 +169,8 @@
     .school-name { color: var(--navy); font-weight: 800; margin-top: 3px; }
 
     .awards-section { background: linear-gradient(180deg, #fffdf7, #f6f8fb); }
-    .awards-intro { display: flex; justify-content: space-between; gap: 24px; align-items: end; }
+    .awards-intro { display: block; }
     .awards-intro .lead { max-width: 760px; }
-    .ceremony-link { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; padding: 11px 18px; border-radius: 999px; background: var(--navy); color: #fff; font-weight: 900; font-size: .9rem; }
-    .ceremony-link:hover { background: #14385f; }
     .award-group { margin-top: 34px; }
     .award-group-title { display: flex; align-items: center; gap: 12px; color: var(--navy); font-size: clamp(1.35rem, 2.4vw, 1.8rem); line-height: 1.25; margin-bottom: 16px; }
     .award-group-title::after { content: ""; height: 1px; background: #e2d4a7; flex: 1; }
@@ -184,7 +182,6 @@
     .award-category { color: var(--muted); font-weight: 800; font-size: .86rem; }
     .award-research-title { color: var(--navy); font-size: 1.08rem; line-height: 1.4; margin-bottom: 12px; }
     .award-school { color: #405066; font-weight: 800; }
-    .award-recipients { color: var(--muted); font-size: .92rem; margin-top: 4px; }
 
     .gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
     .gallery img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 16px; transition: transform .25s ease, box-shadow .25s ease; }
@@ -282,8 +279,6 @@
       .section { padding: 52px 0; }
       .hero { min-height: auto; background-position: center top; }
       .compact-lock, .admin-lock-row, .admin-three { grid-template-columns: 1fr; }
-      .awards-intro { display: block; }
-      .ceremony-link { margin-top: 20px; }
     }
     @media (max-width: 620px) {
       .cards, .schools, .gallery, .application-grid, .award-grid { grid-template-columns: 1fr; }
@@ -544,7 +539,7 @@
           <h2 class="section-title">Abstracts and Video Introduction of Research</h2>
           <p class="lead">You can check the Presentation Schedule &amp; Venue for Oral/Poster. These materials are intended for participating schools and staff. Enter the shared password to view abstracts and video introductions.</p>
 
-          <div id="member-lock" class="compact-lock" style="display: none;">
+          <div id="member-lock" class="compact-lock">
             <div>
               <label for="member-password">Password</label>
               <input id="member-password" type="password" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter'){unlockMembers();}">
@@ -553,13 +548,12 @@
             <button class="primary-button" onclick="unlockMembers()">Unlock</button>
           </div>
 
-          <div id="members-content" class="members-content unlocked">
+          <div id="members-content" class="members-content">
             <div class="tabs">
               <button class="tab" onclick="showPanel(event, 'oral-abstract-panel')">Oral Abstracts</button>
               <button class="tab active" onclick="showPanel(event, 'poster-abstract-panel')">Poster Abstracts</button>
               <button class="tab" onclick="showPanel(event, 'video-panel')">Video Introduction of Research</button>
-
-<a class="ceremony-link" href="https://szkssh00-bit.github.io/SKYSEF/SKYSEF2026_Award_Ceremony.html" target="_blank" rel="noopener">View Award Ceremony</a>
+              <a class="tab" href="https://szkssh00-bit.github.io/SKYSEF/SKYSEF2026_Award_Ceremony.html" target="_blank" rel="noopener">View Award Ceremony</a>
             </div>
             <div id="poster-abstract-panel" class="panel active">
               <div class="subsection-card">
@@ -803,7 +797,7 @@
         <div class="abstract-item"><button class="abstract-head" onclick="toggleAbstract(this)">
         <span><span class="abstract-code">O5-6(Venue:904, 9F)_ 8/3 11:45~</span><span class="abstract-title">Detecting Financial Fake News and Quantifying Psychological &amp; Market Impact Using Machine Learning Models (Venue:FinBERT, etc.)</span><span class="abstract-school">#6 ICT / MING YEN TSAI / St. John's School</span></span><span class="abstract-plus">+</span></button>
         <div class="abstract-body"><strong>Abstract:</strong><br>Financial misinformation exploits two cognitive system reactions, System 1 (Venue:fast, emotional) responses trigger System 2 analytical evaluation, particularly when headlines use overstatements or personalized pronouns. These linguistic patterns were identified as the strongest predictors of fake news (Venue:Bachate &amp; S, 2025). The 2013 AP Twitter hack erased $130 billion in equity value in minutes, demonstrating how fake financial news bypasses rational decision making and triggers automated market responses before verification is possible. FinBERT achieves state-of-the-art financial fake news detection, and frames a novel interdisciplinary research agenda connecting computational NLP to behavioral finance and cognitive psychology. This study only represents the early phases of a broader research program connecting these three areas. Future work will incorporate FakeNewsNet for causal volatility analysis and benchmark other transformer architectures against the FinBERT result.</div></div>
-        <div class="abstract-item open"><button class="abstract-head" onclick="toggleAbstract(this)">
+        <div class="abstract-item"><button class="abstract-head" onclick="toggleAbstract(this)">
         <span><span class="abstract-code">O3-6(Venue:1002, 10F)_ 8/3 11:45~</span><span class="abstract-title">GAIA DR3 RESEARCH ON GLOBULAR CLOSTERS
 </span><span class="abstract-school">Ho, Cheng-Ye, Hsu, Yu-Huan</span></span><span class="abstract-plus">+</span></button>
         <div class="abstract-body"><strong>Abstract:</strong><br></div></div></div>
@@ -1677,5 +1671,7 @@
     function editGalleryPhoto(id) { const g = findById("gallery", id); document.getElementById("gallery-edit-id").value = g.id || ""; document.getElementById("gallery-src-input").value = g.src || ""; document.getElementById("gallery-alt-input").value = g.alt || ""; }
     function clearGalleryForm() { ["gallery-edit-id","gallery-src-input","gallery-alt-input"].forEach(id => document.getElementById(id).value = ""); }
   </script>
+
+
 </body>
 </html>
